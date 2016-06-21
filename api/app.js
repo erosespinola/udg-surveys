@@ -13,8 +13,9 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use('/login', require('./routes/login'));
-
+app.use('/api/login', require('./routes/login'));
+app.use('/api/surveys', require('./routes/surveys'));
+    
 // Catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');

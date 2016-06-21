@@ -3,31 +3,22 @@
 var Sequelize = require('sequelize');
 var database = require('./../services/database.js');
 
-var User = database.define('user', {
+var Survey = database.define('survey', {
 	id: {
 		type: Sequelize.INTEGER,
 		primaryKey: true,
 		unique: true,
         autoIncrement: true
 	},
-	user: {
+	name: {
 		type: Sequelize.STRING
 	},
-	firstName: {
-		type: Sequelize.STRING,
-		field: 'first_name'
-	},
-	lastName: {
-		type: Sequelize.STRING,
-		field: 'last_name'
-
-	},
-	password: {
-		type: Sequelize.STRING
+	active: {
+		type: Sequelize.BOOLEAN
 	}
 }, { 
 	createdAt: 'created_at', 
 	updatedAt: 'updated_at'
 });
 
-module.exports = User;
+module.exports = Survey;

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 19, 2016 at 04:25 AM
+-- Generation Time: Jun 21, 2016 at 07:48 AM
 -- Server version: 5.6.25
 -- PHP Version: 5.6.11
 
@@ -19,6 +19,27 @@ SET time_zone = "+00:00";
 --
 -- Database: `udg_surveys`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `surveys`
+--
+
+CREATE TABLE IF NOT EXISTS `surveys` (
+  `id` int(11) NOT NULL,
+  `name` varchar(256) NOT NULL,
+  `active` tinyint(1) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `surveys`
+--
+
+INSERT INTO `surveys` (`id`, `name`, `active`, `created_at`, `updated_at`) VALUES
+(6, 'Grad survey', 1, '2016-06-21 05:24:10', '2016-06-21 05:45:40');
 
 -- --------------------------------------------------------
 
@@ -48,6 +69,12 @@ INSERT INTO `users` (`id`, `user`, `first_name`, `last_name`, `password`, `creat
 --
 
 --
+-- Indexes for table `surveys`
+--
+ALTER TABLE `surveys`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -57,6 +84,11 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for dumped tables
 --
 
+--
+-- AUTO_INCREMENT for table `surveys`
+--
+ALTER TABLE `surveys`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `users`
 --
