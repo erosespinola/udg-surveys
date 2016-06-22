@@ -8,10 +8,11 @@ var User = database.define('user', {
 		type: Sequelize.INTEGER,
 		primaryKey: true,
 		unique: true,
-        autoIncrement: true
+		autoIncrement: true
 	},
 	user: {
-		type: Sequelize.STRING
+		type: Sequelize.STRING,
+		unique: true
 	},
 	firstName: {
 		type: Sequelize.STRING,

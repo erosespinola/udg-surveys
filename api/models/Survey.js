@@ -8,7 +8,7 @@ var Survey = database.define('survey', {
 		type: Sequelize.INTEGER,
 		primaryKey: true,
 		unique: true,
-        autoIncrement: true
+		autoIncrement: true
 	},
 	name: {
 		type: Sequelize.STRING
