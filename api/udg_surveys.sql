@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 21, 2016 at 07:48 AM
+-- Generation Time: Jun 22, 2016 at 08:01 AM
 -- Server version: 5.6.25
 -- PHP Version: 5.6.11
 
@@ -19,6 +19,31 @@ SET time_zone = "+00:00";
 --
 -- Database: `udg_surveys`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `incentives`
+--
+
+CREATE TABLE IF NOT EXISTS `incentives` (
+  `id` int(11) NOT NULL,
+  `type` int(11) NOT NULL,
+  `requirement` int(11) NOT NULL,
+  `comments` varchar(512) NOT NULL,
+  `active` tinyint(1) NOT NULL,
+  `start_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `end_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `incentives`
+--
+
+INSERT INTO `incentives` (`id`, `type`, `requirement`, `comments`, `active`, `start_at`, `end_at`, `created_at`, `updated_at`) VALUES
+(2, 2, 1, 'Just for grad', 0, '2015-07-23 12:00:00', '2015-07-23 12:00:00', '2016-06-22 05:57:31', '2016-06-22 06:00:20');
 
 -- --------------------------------------------------------
 
@@ -64,33 +89,15 @@ CREATE TABLE IF NOT EXISTS `users` (
 INSERT INTO `users` (`id`, `user`, `first_name`, `last_name`, `password`, `created_at`, `updated_at`) VALUES
 (1, 'erosespinola', 'Eros', 'Espínola', 'password', '2016-06-19 02:18:33', '0000-00-00 00:00:00');
 
--- --------------------------------------------------------
-
---
--- Table structure for table `incentives`
---
-
-CREATE TABLE IF NOT EXISTS `incentives` (
-  `id` int(11) NOT NULL,
-  `start_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `end_at` timestamp NOT NULL,
-  `name` varchar(256) NOT NULL,
-  `active` tinyint(1) NOT NULL,
-  `type` int(6) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `incentives`
---
-
-INSERT INTO `incentives` (`id`, `start_at`, `end_at`, `active`, `type`, `created_at`, `updated_at`) VALUES
-(1, '2016-06-21 05:24:10', '2016-07-21 05:24:10', 1, 2, '2016-06-21 05:24:10', '2016-06-21 05:45:40');
-
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `incentives`
+--
+ALTER TABLE `incentives`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `surveys`
@@ -102,18 +109,18 @@ ALTER TABLE `surveys`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `incentives`
---
-ALTER TABLE `incentives`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user` (`user`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
+--
+-- AUTO_INCREMENT for table `incentives`
+--
+ALTER TABLE `incentives`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `surveys`
 --
@@ -124,12 +131,6 @@ ALTER TABLE `surveys`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `incentives`
---
-ALTER TABLE `incentives`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
