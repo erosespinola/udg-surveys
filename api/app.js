@@ -17,6 +17,10 @@ app.use('/api/login', require('./routes/login'));
 app.use('/api/surveys', require('./routes/surveys'));
 app.use('/api/incentives', require('./routes/incentives'));
 app.use('/api/users', require('./routes/users'));
+app.use('/api/incentive_types', require('./routes/incentive_types'));
+app.use('/api/event_types', require('./routes/event_types'));
+app.use('/api/requirement_types', require('./routes/requirement_types'));
+app.use('/api/newsletter_types', require('./routes/newsletter_types'));
 
 // Catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -11,12 +11,10 @@ var NewsletterType = database.define('newsletter_type', {
 		autoIncrement: true
 	},
   value: {
-    type: Sequelize.STRING,
-    unique: true
+    type: Sequelize.STRING
   }
 }, {
-	createdAt: 'created_at',
-	updatedAt: 'updated_at'
+	timestamps: false
 });
 
 module.exports = NewsletterType;
