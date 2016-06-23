@@ -14,6 +14,10 @@ var User = database.define('user', {
 		type: Sequelize.STRING,
 		unique: true
 	},
+	role: {
+		type: Sequelize.INTEGER,
+		field: 'role'
+	},
 	firstName: {
 		type: Sequelize.STRING,
 		field: 'first_name'
@@ -21,13 +25,12 @@ var User = database.define('user', {
 	lastName: {
 		type: Sequelize.STRING,
 		field: 'last_name'
-
 	},
 	password: {
 		type: Sequelize.STRING
 	}
-}, { 
-	createdAt: 'created_at', 
+}, {
+	createdAt: 'created_at',
 	updatedAt: 'updated_at'
 });
 

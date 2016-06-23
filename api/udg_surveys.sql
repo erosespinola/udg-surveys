@@ -75,6 +75,7 @@ INSERT INTO `surveys` (`id`, `name`, `active`, `created_at`, `updated_at`) VALUE
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL,
   `user` varchar(128) NOT NULL,
+  `role` int(11) NOT NULL,
   `first_name` varchar(128) NOT NULL,
   `last_name` varchar(128) NOT NULL,
   `password` varchar(128) NOT NULL,
@@ -86,8 +87,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `user`, `first_name`, `last_name`, `password`, `created_at`, `updated_at`) VALUES
-(1, 'erosespinola', 'Eros', 'Espínola', 'password', '2016-06-19 02:18:33', '0000-00-00 00:00:00');
+INSERT INTO `users` (`id`, `user`, `role`, `first_name`, `last_name`, `password`, `created_at`, `updated_at`) VALUES
+(1, 'erosespinola', 1, 'Eros', 'Espínola', 'password', '2016-06-19 02:18:33', '0000-00-00 00:00:00');
 
 --
 -- Indexes for dumped tables

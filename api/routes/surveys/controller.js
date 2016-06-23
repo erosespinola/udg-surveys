@@ -20,8 +20,8 @@ exports.show = function(req, res) {
 };
 
 exports.create = function(req, res) {
-	Survey.create({ 
-		name: req.body.name, 
+	Survey.create({
+		name: req.body.name,
 		active: req.body.active
 	}).then(function(survey) {
 		return res.status(200).json(survey);
@@ -36,7 +36,7 @@ exports.update = function(req, res) {
 		// Note: If no field sent in request use current value
 		var name = req.body.name == null ? survey.get('name') : req.body.name;
 		var active = req.body.active == null ? survey.get('active') : req.body.active;
-		
+
 		survey.update({
 			name: name,
 			active: active
@@ -45,7 +45,7 @@ exports.update = function(req, res) {
 		});
 	}).catch(function(err) {
         return res.status(500).json({ error: err });
-    });	
+    });
 };
 
 exports.delete = function(req, res) {
