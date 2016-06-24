@@ -3,6 +3,7 @@
 var Sequelize = require('sequelize');
 var database = require('./../services/database');
 var IncentiveType = require('./IncentiveType');
+var RequirementType = require('./RequirementType');
 
 var Incentive = database.define('incentive', {
 	id: {
@@ -40,5 +41,10 @@ Incentive.belongsTo(IncentiveType, {
 	foreignKey: 'type',
 	as: 'incentive_type'
 });
+
+Incentive.belongsTo(RequirementType, {
+	foreignKey: 'type',
+	as: 'requirement_type'
+})
 
 module.exports = Incentive;

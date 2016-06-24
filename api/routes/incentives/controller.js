@@ -2,9 +2,10 @@
 
 var Incentive = require('./../../models/Incentive');
 var IncentiveType = require('./../../models/IncentiveType');
+var RequirementType = require('./../../models/RequirementType');
 
 exports.list = function(req, res) {
-	Incentive.findAll({ include: [{ model: IncentiveType, as: 'incentive_type' }]}).then(function(incentives) {
+	Incentive.findAll({ include: [{ model: IncentiveType, as: 'incentive_type' }, {model: RequirementType, as: 'requirement_type'}]}).then(function(incentives) {
 		return res.status(200).json(incentives);
 	}).catch(function(err) {
 		return res.status(500).json({ error: err });
@@ -13,7 +14,7 @@ exports.list = function(req, res) {
 
 exports.show = function(req, res) {
 	var id = req.params.id;
-	Incentive.findById(id, { include: [{ model: IncentiveType, as: 'incentive_type' }]}).then(function(incentive) {
+	Incentive.findById(id, { include: [{ model: IncentiveType, as: 'incentive_type' }, {model: RequirementType, as: 'requirement_type'}]}).then(function(incentive) {
 		return res.status(200).json(incentive);
 	}).catch(function(err) {
 		return res.status(500).json({ error: err });
@@ -21,7 +22,7 @@ exports.show = function(req, res) {
 };
 
 exports.create = function(req, res) {
-	Incentive.create({ 
+	Incentive.create({
 		startAt: req.body.startAt,
 		endAt: req.body.endAt,
 		type: req.body.type,
@@ -44,7 +45,7 @@ exports.update = function(req, res) {
 		var comments = req.body.comments == null ? incentive.get('comments') : req.body.comments;
 		var startAt = req.body.startAt == null ? incentive.get('startAt'): req.body.startAt;
 		var endAt = req.body.endAt == null ? incentive.get('endAt'): req.body.endAt;
-		
+
 		incentive.update({
 			startAt: startAt,
 			endAt: endAt,

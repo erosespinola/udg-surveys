@@ -315,7 +315,7 @@ ALTER TABLE `users`
 --
 ALTER TABLE `incentives`
   ADD CONSTRAINT `incentive_type` FOREIGN KEY (`type`) REFERENCES `incentive_types` (`id`);
-  -- TODO: Add requirement-types FOREIGN KEY
+  ADD CONSTRAINT `requirement_type` FOREIGN KEY (`type`) REFERENCES `requirement_types` (`id`);
 --
 -- Constraints for table `newsletters`
 --
