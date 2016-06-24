@@ -1,0 +1,24 @@
+/*
+	General style
+*/
+body {
+	padding-top: 70px;
+}
+
+.navbar-brand {
+	padding: 0 15px !important;
+}
+
+/* Login */
+.login-logo {
+	text-align: center;
+}
+
+.login-form {}
+
+.login-form-header {
+	font-size: 2.5rem;
+	font-weight: bold;
+	margin: 1rem 0;
+	text-align: center;
+}
