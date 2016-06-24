@@ -9,6 +9,15 @@ body {
 	padding: 0 15px !important;
 }
 
+.secondary-navbar {
+	margin: 1em 0;
+}
+
+.actions-container span {
+	cursor: pointer;
+	margin-right: 1.2em;
+}
+
 /* Login */
 .login-logo {
 	text-align: center;
@@ -22,3 +31,51 @@ body {
 	margin: 1rem 0;
 	text-align: center;
 }
+
+/* Survey */
+
+.survey-form {
+	margin-bottom: 4em;
+}
+
+.question-container {
+	cursor: pointer;
+}
+
+.question-name {
+	font-size: 2rem;
+}
+
+.question-type {
+	color: #888;
+	margin-left: 1em;
+}
+
+.question-detail-icon {
+	font-size: 2rem;
+}
+
+.question-add {
+	display: inline-block;
+	font-size: 2rem;
+	text-align: center;
+	width: 100%;
+}
+
+.question-form {
+	margin-bottom: 4em;
+}
+
+.answers-container {
+	margin-bottom: 2em;
+}
+
+.answer-input {
+	border-radius: 2px !important;
+	height: auto !important;
+	padding: 0 12px !important;
+}
+
+
+
+
