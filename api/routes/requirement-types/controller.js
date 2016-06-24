@@ -3,11 +3,11 @@
 var RequirementType = require('./../../models/RequirementType');
 
 exports.list = function(req, res) {
-    RequirementType.findAll().then(function(requirementTypes) {
-    	return res.status(200).json(requirementTypes);
-    }).catch(function(err) {
-        return res.status(500).json({ error: err });
-    });
+	RequirementType.findAll().then(function(requirementTypes) {
+		return res.status(200).json(requirementTypes);
+	}).catch(function(err) {
+		return res.status(500).json({ error: err });
+	});
 };
 
 exports.show = function(req, res) {
@@ -15,8 +15,8 @@ exports.show = function(req, res) {
 	RequirementType.findById(id).then(function(requirementType) {
 		return res.status(200).json(requirementType);
 	}).catch(function(err) {
-        return res.status(500).json({ error: err });
-    });
+		return res.status(500).json({ error: err });
+	});
 };
 
 exports.create = function(req, res) {
@@ -32,17 +32,18 @@ exports.create = function(req, res) {
 exports.update = function(req, res) {
 	var id = req.params.id;
 	RequirementType.findById(id).then(function(requirementType) {
-		// Note: If no field sent in request use current value
 		var value = req.body.value == null ? requirementType.get('value') : req.body.value;
 
 		requirementType.update({
 			value: value
 		}).then(function(requirementType) {
 			return res.status(200).json(requirementType);
+		}).catch(function(err) {
+			return res.status(500).json({ error: err });
 		});
 	}).catch(function(err) {
-        return res.status(500).json({ error: err });
-    });
+		return res.status(500).json({ error: err });
+	});
 };
 
 exports.delete = function(req, res) {
@@ -50,6 +51,6 @@ exports.delete = function(req, res) {
 	RequirementType.destroy({ where: { id: id } }).then(function(requirementType) {
 		return res.status(200).json(requirementType);
 	}).catch(function(err) {
-        return res.status(500).json({ error: err });
-    });
+		return res.status(500).json({ error: err });
+	});
 };

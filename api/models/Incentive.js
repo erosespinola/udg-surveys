@@ -1,7 +1,8 @@
 'use strict';
 
 var Sequelize = require('sequelize');
-var database = require('./../services/database.js');
+var database = require('./../services/database');
+var IncentiveType = require('./IncentiveType');
 
 var Incentive = database.define('incentive', {
 	id: {
@@ -33,6 +34,11 @@ var Incentive = database.define('incentive', {
 }, { 
 	createdAt: 'created_at', 
 	updatedAt: 'updated_at'
+});
+
+Incentive.belongsTo(IncentiveType, {
+	foreignKey: 'type',
+	as: 'incentive_type'
 });
 
 module.exports = Incentive;

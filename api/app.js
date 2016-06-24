@@ -17,16 +17,16 @@ app.use('/api/login', require('./routes/login'));
 app.use('/api/surveys', require('./routes/surveys'));
 app.use('/api/incentives', require('./routes/incentives'));
 app.use('/api/users', require('./routes/users'));
-app.use('/api/incentive_types', require('./routes/incentive_types'));
-app.use('/api/event_types', require('./routes/event_types'));
-app.use('/api/requirement_types', require('./routes/requirement_types'));
-app.use('/api/newsletter_types', require('./routes/newsletter_types'));
+app.use('/api/incentive-types', require('./routes/incentive-types'));
+app.use('/api/event-types', require('./routes/event-types'));
+app.use('/api/requirement-types', require('./routes/requirement-types'));
+app.use('/api/newsletter-types', require('./routes/newsletter-types'));
 
 // Catch 404 and forward to error handler
 app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
+	var err = new Error('Not Found');
+	err.status = 404;
+	next(err);
 });
 
 // Error handlers
@@ -34,25 +34,25 @@ app.use(function(req, res, next) {
 // Development error handler
 // Will print stacktrace
 if (app.get('env') === 'development') {
-    app.use(function(err, req, res, next) {
-        res.status(err.status || 500);
-        res.json({
-            message: err.message,
-            error: err,
-            title: 'error'
-        });
-    });
+	app.use(function(err, req, res, next) {
+		res.status(err.status || 500);
+		res.json({
+			message: err.message,
+			error: err,
+			title: 'error'
+		});
+	});
 }
 
 // Production error handler
 // No stacktraces leaked to user
 app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.json({
-        message: err.message,
-        error: {},
-        title: 'error'
-    });
+	res.status(err.status || 500);
+	res.json({
+		message: err.message,
+		error: {},
+		title: 'error'
+	});
 });
 
 

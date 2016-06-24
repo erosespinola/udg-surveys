@@ -1,7 +1,8 @@
 'use strict';
 
 var Sequelize = require('sequelize');
-var database = require('./../services/database.js');
+var database = require('./../services/database');
+var Incentive = require('./Incentive');
 
 var IncentiveType = database.define('incentive_type', {
 	id: {
@@ -10,9 +11,9 @@ var IncentiveType = database.define('incentive_type', {
 		unique: true,
 		autoIncrement: true
 	},
-  value: {
-    type: Sequelize.STRING
-  }
+	value: {
+		type: Sequelize.STRING
+	}
 }, {
 	timestamps: false
 });

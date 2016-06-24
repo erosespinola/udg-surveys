@@ -1,6 +1,6 @@
 var Sequelize = require('sequelize');
 
-var database = new Sequelize('udg_surveys', 'root', '', {
+var database = new Sequelize('udg_surveys', 'root', '(Chuckrules19)', {
 	host: '127.0.0.1',
 	port: 3306,
 	dialect: 'mysql',

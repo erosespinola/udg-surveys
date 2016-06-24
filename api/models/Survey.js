@@ -1,7 +1,7 @@
 'use strict';
 
 var Sequelize = require('sequelize');
-var database = require('./../services/database.js');
+var database = require('./../services/database');
 
 var Survey = database.define('survey', {
 	id: {

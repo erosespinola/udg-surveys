@@ -1,7 +1,7 @@
 'use strict';
 
 var Sequelize = require('sequelize');
-var database = require('./../services/database.js');
+var database = require('./../services/database');
 
 var User = database.define('user', {
 	id: {
@@ -15,8 +15,7 @@ var User = database.define('user', {
 		unique: true
 	},
 	role: {
-		type: Sequelize.INTEGER,
-		field: 'role'
+		type: Sequelize.INTEGER
 	},
 	firstName: {
 		type: Sequelize.STRING,

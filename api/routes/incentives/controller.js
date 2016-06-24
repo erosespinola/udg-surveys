@@ -1,22 +1,23 @@
 'use strict';
 
 var Incentive = require('./../../models/Incentive');
+var IncentiveType = require('./../../models/IncentiveType');
 
 exports.list = function(req, res) {
-    Incentive.findAll().then(function(incentives) {
-    	return res.status(200).json(incentives);
-    }).catch(function(err) {
-        return res.status(500).json({ error: err });
-    });
+	Incentive.findAll({ include: [{ model: IncentiveType, as: 'incentive_type' }]}).then(function(incentives) {
+		return res.status(200).json(incentives);
+	}).catch(function(err) {
+		return res.status(500).json({ error: err });
+	});
 };
 
 exports.show = function(req, res) {
 	var id = req.params.id;
-	Incentive.findById(id).then(function(incentive) {
+	Incentive.findById(id, { include: [{ model: IncentiveType, as: 'incentive_type' }]}).then(function(incentive) {
 		return res.status(200).json(incentive);
 	}).catch(function(err) {
-        return res.status(500).json({ error: err });
-    });
+		return res.status(500).json({ error: err });
+	});
 };
 
 exports.create = function(req, res) {
@@ -37,7 +38,6 @@ exports.create = function(req, res) {
 exports.update = function(req, res) {
 	var id = req.params.id;
 	Incentive.findById(id).then(function(incentive) {
-		// Note: If no field sent in request use current value
 		var active = req.body.active == null ? incentive.get('active') : req.body.active;
 		var type = req.body.type == null ? incentive.get('type') : req.body.type;
 		var requirement = req.body.requirement == null ? incentive.get('requirement') : req.body.requirement;
@@ -54,10 +54,12 @@ exports.update = function(req, res) {
 			comments: comments
 		}).then(function(incentive) {
 			return res.status(200).json(incentive);
+		}).catch(function(err) {
+			return res.status(500).json({ error: err });
 		});
 	}).catch(function(err) {
-        return res.status(500).json({ error: err });
-    });	
+		return res.status(500).json({ error: err });
+	});
 };
 
 exports.delete = function(req, res) {
@@ -65,6 +67,6 @@ exports.delete = function(req, res) {
 	Incentive.destroy({ where: { id: id } }).then(function(incentive) {
 		return res.status(200).json(incentive);
 	}).catch(function(err) {
-        return res.status(500).json({ error: err });
-    });
+		return res.status(500).json({ error: err });
+	});
 };

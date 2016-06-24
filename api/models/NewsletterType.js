@@ -1,7 +1,7 @@
 'use strict';
 
 var Sequelize = require('sequelize');
-var database = require('./../services/database.js');
+var database = require('./../services/database');
 
 var NewsletterType = database.define('newsletter_type', {
 	id: {
@@ -10,9 +10,9 @@ var NewsletterType = database.define('newsletter_type', {
 		unique: true,
 		autoIncrement: true
 	},
-  value: {
-    type: Sequelize.STRING
-  }
+	value: {
+		type: Sequelize.STRING
+	}
 }, {
 	timestamps: false
 });
