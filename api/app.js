@@ -16,6 +16,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api/login', require('./routes/login'));
 app.use('/api/surveys', require('./routes/surveys'));
 app.use('/api/incentives', require('./routes/incentives'));
+app.use('/api/newsletters', require('./routes/newsletters'));
+app.use('/api/events', require('./routes/events'));
 app.use('/api/users', require('./routes/users'));
 app.use('/api/incentive-types', require('./routes/incentive-types'));
 app.use('/api/event-types', require('./routes/event-types'));

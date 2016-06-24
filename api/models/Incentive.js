@@ -13,11 +13,11 @@ var Incentive = database.define('incentive', {
 	},
 	startAt: {
 		type: Sequelize.DATE,
-		field: 'start_at' 
+		field: 'start_at'
 	},
 	endAt: {
 		type: Sequelize.DATE,
-		field: 'end_at' 
+		field: 'end_at'
 	},
 	type: {
 		type: Sequelize.INTEGER
@@ -31,8 +31,8 @@ var Incentive = database.define('incentive', {
 	comments: {
 		type: Sequelize.STRING
 	}
-}, { 
-	createdAt: 'created_at', 
+}, {
+	createdAt: 'created_at',
 	updatedAt: 'updated_at'
 });
 
