@@ -31,6 +31,15 @@ body {
 	width: auto !important;
 }
 
+.two-input-container > div{
+	display: inline-block;
+	width: 49%;
+}
+
+.two-input-container > div:last-child{
+	float: right;
+}
+
 /* Login */
 .login-logo {
 	text-align: center;
