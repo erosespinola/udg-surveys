@@ -38,7 +38,7 @@
                             <li><a href="#">Gestión de usuarios</a></li>
                             <li><a href="#">Another action</a></li>
                             <li role="separator" class="divider"></li>
-                            <li data-toggle="modal" data-target="#system-status-modal" data-backdrop="static"><a href="#">Modo mantenimiento</a></li>
+                            <li><a href="#">Datos de contacto</a></li>
                         </ul>
                     </li>
                     <li><a href="#">Cerrar sesión</a></li>
@@ -53,7 +53,7 @@
 
 
                 <div class=" secondary-navbar clearfix">
-                    <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#survey-modal" data-backdrop="static">Crear encuesta</button>
+                    <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#incentive-modal-detail" data-backdrop="static">Agregar incentivo</button>
                 </div>
 
 
@@ -64,47 +64,50 @@
                 </ul>
                 <table class="table table-hover">
                     <tr>
-                        <th>Nombre</th>
+                        <th>Incentivo</th>
                         <th>Fecha de creación</th>
                         <th>Estatus</th>
                         <th>Acciones</th>
                     </tr>
                     <tr>
-                        <td>Encuesta 1</td>
+                        <td>Incentivo 1</td>
                         <td>12/06/2016</td>
                         <td>Activa</td>
                         <td>
                             <div class="actions-container">
                                 <span class="fa fa-pencil" data-toggle="tooltip" data-placement="top" title="Editar"></span>
+                                <span data-toggle="modal" data-target="#incentive-modal-status" data-backdrop="static">
+                                    <span class="fa fa-toggle-on" data-toggle="tooltip" data-placement="top" title="Cambiar estatus"></span>
+                                </span>
                                 <span class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="Eliminar"></span>
-                                <span class="fa fa-file-excel-o" data-toggle="tooltip" data-placement="top" title="Exportar"></span>
-                                <span class="fa fa-bar-chart" data-toggle="tooltip" data-placement="top" title="Estadísticas"></span>    
                             </div>
                         </td>
                     </tr>
                     <tr>
-                        <td>Encuesta 1</td>
+                        <td>Incentivo 1</td>
                         <td>12/06/2016</td>
                         <td>Activa</td>
                         <td>
                             <div class="actions-container">
                                 <span class="fa fa-pencil" data-toggle="tooltip" data-placement="top" title="Editar"></span>
+                                <span data-toggle="modal" data-target="#incentive-modal-status" data-backdrop="static">
+                                    <span class="fa fa-toggle-on" data-toggle="tooltip" data-placement="top" title="Cambiar estatus"></span>
+                                </span>
                                 <span class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="Eliminar"></span>
-                                <span class="fa fa-file-excel-o" data-toggle="tooltip" data-placement="top" title="Exportar"></span>
-                                <span class="fa fa-bar-chart" data-toggle="tooltip" data-placement="top" title="Estadísticas"></span>    
                             </div>
                         </td>
                     </tr>
                     <tr>
-                        <td>Encuesta 1</td>
+                        <td>Incentivo 1</td>
                         <td>12/06/2016</td>
                         <td>Activa</td>
                         <td>
                             <div class="actions-container">
                                 <span class="fa fa-pencil" data-toggle="tooltip" data-placement="top" title="Editar"></span>
+                                <span data-toggle="modal" data-target="#incentive-modal-status" data-backdrop="static">
+                                    <span class="fa fa-toggle-on" data-toggle="tooltip" data-placement="top" title="Cambiar estatus"></span>
+                                </span>
                                 <span class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="Eliminar"></span>
-                                <span class="fa fa-file-excel-o" data-toggle="tooltip" data-placement="top" title="Exportar"></span>
-                                <span class="fa fa-bar-chart" data-toggle="tooltip" data-placement="top" title="Estadísticas"></span>    
                             </div>
                         </td>
                     </tr>
@@ -114,8 +117,73 @@
         </div>
     </div>
 
+    <div class="modal fade" id="incentive-modal-detail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Nuevo incentivo</h4>
+                </div>
+                <div class="modal-body">
 
-    <div class="modal fade" id="system-status-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <form>  
+                        <div class="incentive-form">
+                            <div class="form-inline">
+                                <div class="form-group">
+                                    <div>
+                                        <label for="survey-name">Tipo</label>
+                                    </div>
+                                    <select class="form-control" id="incentive-type">
+                                        <option>Selecciona un tipo</option>
+                                        <option>Tipo 1</option>
+                                        <option>Tipo 2</option>
+                                    </select>
+                                    <button class="btn btn-default pull-right">Agregar tipo</button>
+                                </div>    
+                            </div>
+                            <div class="form-group">
+                                <label for="survey-detail">Condición</label>
+                                <select class="form-control">
+                                    <option>Selecciona una condición</option>
+                                </select>
+                            </div>
+                            <div class="form-inline">
+                                <div class="form-group">
+                                    <div>
+                                        <label for="survey-name">Fecha de vigencia</label>
+                                    </div>
+                                    <label>Inicio: </label>
+                                    <input class="form-control" type="date" id="date-start"> 
+                                    <label>Fin:</label>
+                                    <input class="form-control" type="date" id="date-end">
+                                </div>    
+                            </div>
+                            <div class="form-group">
+                                <label>Archivo</label>
+                                <input class="form-control" type="file">
+                            </div>
+                            <div class="form-group">
+                                <label>Link</label>
+                                <input class="form-control" type="text">
+                            </div>
+                            <div class="form-group">
+                                <label>Dirección</label>
+                                <input class="form-control" type="text">
+                            </div>
+                        </div>
+
+                        
+                    </form>
+                
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary">Guardar incentivo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="incentive-modal-status" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -125,12 +193,10 @@
 
                     <form>
                         <div class="form-group">
-                            <div>
-                                <label>Estatus del sistema</label>
-                            </div>
                             <div class="bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-id-switch-onText bootstrap-switch-animate bootstrap-switch-off" style="">
                                 <div class="bootstrap-switch-container" style="">
-                                    <input id="status" type="checkbox" checked="" data-on-text="Normal" data-off-text="Mantenimiento">
+                                    
+                                    <input id="status" type="checkbox" checked="" data-on-text="Activo" data-off-text="Inactivo">
                                 </div>
                             </div>
                         </div>
@@ -138,9 +204,7 @@
                 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-                    <label>Contraseña:&nbsp;</label>
-                    <input type="password" class="form-control password-inline">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                     <button type="button" class="btn btn-primary">Cambiar estatus</button>
                 </div>
             </div>
@@ -154,8 +218,9 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/bootstrap-switch.min.js"></script>
     <script src="js/app.js"></script>
+
     <script type="text/javascript">
-        $('#system-status-modal').modal();
+        $('#incentive-modal-status').modal();
         $("[id='status']").bootstrapSwitch();
     </script>
 

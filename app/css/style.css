@@ -6,16 +6,29 @@ body {
 }
 
 .navbar-brand {
-	padding: 0 15px !important;
+	padding: 6px 15px !important;
 }
 
 .secondary-navbar {
 	margin: 1em 0;
 }
 
-.actions-container span {
+.secondary-navbar > button {
+	margin: 0 .5em;
+}
+
+.actions-container > span {
 	cursor: pointer;
 	margin-right: 1.2em;
+}
+
+.actions-container > span:hover {
+	color: #337ab7; /* Bootstrap's blue */
+}
+
+.password-inline {
+	display: inline-block !important;
+	width: auto !important;
 }
 
 /* Login */
@@ -62,7 +75,7 @@ body {
 	width: 100%;
 }
 
-.question-form {
+.question-form, .incentive-form {
 	margin-bottom: 4em;
 }
 
@@ -76,6 +89,16 @@ body {
 	padding: 0 12px !important;
 }
 
+input[type='radio']:disabled, input[type='checkbox']:disabled {
+    cursor: default;
+}
+
+/* Incentives */
+
+.form-inline > .form-group {
+	width: 100%;
+	margin-bottom: 1em;
+}
 
 
 
