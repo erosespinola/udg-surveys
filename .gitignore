@@ -33,5 +33,6 @@ app/node_modules
 
 # Optional REPL history
 .node_repl_history
-Status API Training Shop Blog About
-© 2016 GitHub, Inc. Terms Privacy Security Contact Help
+
+# db settings
+api/services/database.js

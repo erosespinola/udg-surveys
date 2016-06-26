@@ -2,23 +2,20 @@
 
 var Sequelize = require('sequelize');
 var database = require('./../services/database');
+var Incentive = require('./Incentive');
 
-var Survey = database.define('survey', {
+var IncentiveType = database.define('incentive_type', {
 	id: {
 		type: Sequelize.INTEGER,
 		primaryKey: true,
 		unique: true,
 		autoIncrement: true
 	},
-	name: {
+	value: {
 		type: Sequelize.STRING
-	},
-	active: {
-		type: Sequelize.BOOLEAN
 	}
-}, { 
-	createdAt: 'created_at', 
-	updatedAt: 'updated_at'
+}, {
+	timestamps: false
 });
 
-module.exports = Survey;
+module.exports = IncentiveType;
