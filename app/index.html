@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" ng-app="udgSurveys">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,6 +8,8 @@
     <title>Bootstrap 101 Template</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-switch.min.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -27,16 +29,15 @@
                     </a>
                 </div>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">Inicio/Estadíasticas</a></li>
-                    <li><a href="#">Encuestas</a></li>
-                    <li><a href="#">Incentivos</a></li>
+                    <li><a href="#/">Inicio/Estadíasticas</a></li>
+                    <li><a href="#/surveys">Encuestas</a></li>
+                    <li><a href="#/incentives">Incentivos</a></li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administración <span class="caret"></span></a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administración <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Gestión de usuarios</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">Datos de contacto</a></li>
+                            <li><a href="#/users">Usuarios</a></li>
+                            <li><a href="" data-toggle="modal" data-target="#system-status-modal">Modo mantenimiento</a></li>
+                            <li><a href="" data-toggle="modal" data-target="#contact-modal">Datos de contacto</a></li>
                         </ul>
                     </li>
                     <li><a href="#">Cerrar sesión</a></li>
@@ -44,18 +45,87 @@
             </div>
         </nav>
     </header>
+    
+    <div ng-view=""></div>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                This is a column
+
+    <div class="modal fade" id="system-status-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Cambiar estatus</h4>
+                </div>
+                <div class="modal-body">
+
+                    <form>
+                        <div class="form-group">
+                            <div>
+                                <label>Estatus del sistema</label>
+                            </div>
+                            <div class="bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-id-switch-onText bootstrap-switch-animate bootstrap-switch-off" style="">
+                                <div class="bootstrap-switch-container" style="">
+                                    <input id="status" type="checkbox" checked="" data-on-text="Normal" data-off-text="Mantenimiento">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
+                    <label>Contraseña:&nbsp;</label>
+                    <input type="password" class="form-control password-inline">
+                    <button type="button" class="btn btn-primary">Cambiar estatus</button>
+                </div>
             </div>
         </div>
     </div>
 
+    <div class="modal fade" id="contact-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Contacto</h4>
+                </div>
+                <div class="modal-body">
+
+                    <form>
+                        <div class="form-group">
+                            <label>Contacto</label>
+                            <textarea class="form-control"></textarea>
+                        </div>
+                    </form>
+                
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary">Actualizar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap-switch.min.js"></script>
+
+    <!-- Angular -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-route.js"></script>
+    <script src="js/app.js"></script>
+
+
+    <script type="text/javascript">
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        });
+
+        $("[id='status']").bootstrapSwitch();
+    </script>
+
 </body>
 </html>

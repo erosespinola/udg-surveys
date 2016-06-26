@@ -1,0 +1,125 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+
+
+            <div class=" secondary-navbar clearfix">
+                <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#user-modal" data-backdrop="static">Crear usuario</button>
+            </div>
+
+
+            <ul class="nav nav-tabs nav-justified">
+                <li role="presentation" class="active"><a href="#">Todos</a></li>
+                <li role="presentation"><a href="#">Activos</a></li>
+                <li role="presentation"><a href="#">Inactivos</a></li>
+            </ul>
+            <table class="table table-hover">
+                <tr>
+                    <th>Usuario</th>
+                    <th>Rol</th>
+                    <th>Fecha de creación</th>
+                    <th>Estatus</th>
+                    <th>Acciones</th>
+                </tr>
+                <tr>
+                    <td>Antonio Hdez</td>
+                    <td>Administrador</td>
+                    <td>12/06/2016</td>
+                    <td>Activo</td>
+                    <td>
+                        <div class="actions-container">
+                            <span class="fa fa-pencil" data-toggle="tooltip" data-placement="top" title="Editar"></span>
+                            <span class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="Eliminar"></span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Antonio Hdez</td>
+                    <td>Administrador</td>
+                    <td>12/06/2016</td>
+                    <td>Inactivo</td>
+                    <td>
+                        <div class="actions-container">
+                            <span class="fa fa-pencil" data-toggle="tooltip" data-placement="top" title="Editar"></span>
+                            <span class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="Eliminar"></span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Antonio Hdez</td>
+                    <td>Administrador</td>
+                    <td>12/06/2016</td>
+                    <td>Activo</td>
+                    <td>
+                        <div class="actions-container">
+                            <span class="fa fa-pencil" data-toggle="tooltip" data-placement="top" title="Editar"></span>
+                            <span class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="Eliminar"></span>
+                        </div>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="user-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Crear usuario</h4>
+            </div>
+            <div class="modal-body">
+
+                <form>
+                    <div class="two-input-container">
+                        <div class="form-group">
+                            <label>Rol</label>
+                            <select class="form-control">
+                                <option>Administrador</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Estatus</label>
+                            <select class="form-control">
+                                <option>Activo</option>
+                                <option>Inactivo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="two-input-container">
+                        <div class="form-group">
+                            <label>Nombre</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Apellidos</label>
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="two-input-container">
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" class="form-control">
+                        </div>
+                    </div>
+
+                </form>
+            
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary">Crear usuario</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,122 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+
+            <form>
+                <div class="survey-form">
+                    <div class="form-group">
+                        <label for="survey-name">Nombre</label>
+                        <input type="text" class="form-control" id="survey-name" placeholder="Encuesta">
+                    </div>
+                    <div class="form-group">
+                        <label for="survey-name">Descripción</label>
+                        <textarea class="form-control" rows="2" placeholder="Descripción de la encuesta"></textarea>
+                    </div>    
+                </div>
+                <table class="table table-hover">
+                    <tr>
+                        <td>
+                            <div class="question-container clearfix" data-toggle="modal" data-target="#survey-modal-detail">
+                                <span class="question-name">Pregunta 1</span>
+                                <span class="question-type">Opción múltiple</span>
+                                <span class="question-detail-icon pull-right">
+                                    <span class="fa fa-chevron-right"></span>
+                                </span>
+                            </div>      
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="question-container clearfix" data-toggle="modal" data-target="#survey-modal-detail">
+                                <span class="question-name">Pregunta 2</span>
+                                <span class="question-type">Abierta</span>
+                                <span class="question-detail-icon pull-right">
+                                    <span class="fa fa-chevron-right"></span>
+                                </span>
+                            </div>      
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="question-container clearfix" data-toggle="modal" data-target="#survey-modal-detail">
+                                <span class="question-add">
+                                    <span class="fa fa-plus"></span>
+                                    <span> Agregar pregunta</span>
+                                </span>
+                            </div>      
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="secondary-navbar clearfix">
+                    <button type="button" class="btn btn-primary pull-right">Guardar</button>
+                    <a href="#/surveys" class="btn btn-default pull-right">Cancelar</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="survey-modal-detail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Pregunta 1</h4>
+            </div>
+            <div class="modal-body">
+
+                <form>  
+                    <div class="question-form">
+                        <div class="form-group">
+                            <label for="survey-name">Pregunta</label>
+                            <input type="text" class="form-control" id="survey-name">
+                        </div>
+                        <div class="form-group">
+                            <label for="survey-detail">Detalle</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="survey-type">Tipo de pregunta</label>
+                            <select id="survey-type" class="form-control">
+                                <option>Abierta</option>
+                                <option>Opción múltiple</option>
+                                <option>Selección múltiple</option>
+                                <option>Rango</option>
+                            </select>            
+                        </div>    
+                    </div>
+                    
+                    <div class="answers-container">
+                        <div>Respuestas:</div>
+                        
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" disabled>
+                                <input type="text" class="form-control answer-input">
+                            </label>
+                        </div>    
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" disabled>
+                                <input type="text" class="form-control answer-input">
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" disabled>
+                                <input type="text" class="form-control answer-input" placeholder="Agregar respuesta">
+                            </label>
+                        </div>    
+                    </div>
+                    
+                </form>
+            
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary">Guardar pregunta</button>
+            </div>
+        </div>
+    </div>
+</div>
