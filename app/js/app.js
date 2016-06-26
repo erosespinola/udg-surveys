@@ -7,9 +7,24 @@ app.config(function($routeProvider) {
       when('/', {
 		template: 'Work in progress'
 	}).
+      when('/login', {
+		templateUrl: 'templates/login.html',
+		controller: 'loginController'
+	}).
       when('/surveys', {
 		templateUrl: 'templates/surveys.html',
-		controller: 'surveysController'
+		controller: 'surveysController',
+		resolve: {
+			auth: function($q, authService) {
+				var userInfo = authService.getUserInfo();
+
+				if (userInfo) {
+					return $q.when(userInfo);
+				} else {
+					return $q.reject({ authenticated: false });
+				}
+			}
+		}
 	}).
       when('/surveys/create', {
 		templateUrl: 'templates/surveys/create.html',
@@ -17,11 +32,11 @@ app.config(function($routeProvider) {
 	}).
       when('/incentives', {
 		templateUrl: 'templates/incentives.html',
-		controller: 'surveysController'
+		controller: 'incentivesController'
 	}).
       when('/users', {
 		templateUrl: 'templates/users.html',
-		controller: 'surveysController'
+		controller: 'usersController'
 	}).
       otherwise({
       	template: 'Testing default route'
@@ -29,7 +44,19 @@ app.config(function($routeProvider) {
       });
 });
 
+app.run(["$rootScope", "$location", function ($rootScope, $location) {
 
-app.controller('surveysController', function($scope) {
-	
-});
+    $rootScope.$on("$routeChangeSuccess", function (userInfo) {
+        console.log(userInfo);
+    });
+
+    $rootScope.$on("$routeChangeError", function (event, current, previous, eventObj) {
+        if (eventObj.authenticated === false) {
+            $location.path("/login");
+        }
+    });
+}]);
+
+
+
+
