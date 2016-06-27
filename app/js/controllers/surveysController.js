@@ -1,14 +1,23 @@
-app.controller("surveysController", ["$scope", "$location", "authService", "auth",function ($scope, $location, authService, auth) {
-    $scope.userInfo = auth;
+app.controller('surveysController', ['$scope', '$location', 'authService', 'surveysFactory', 'surveyFactory', 
+    function ($scope, $location, authService, surveysFactory, surveyFactory) {
+        //$scope.userInfo = auth;
 
-    $scope.logout = function () {
+        // callback for ng-click 'editSurvey':
+        $scope.editSurvey = function (userId) {
+            $location.path('/surveys/' + surveyId);
+        };
 
-        authService.logout()
-            .then(function (result) {
-                $scope.userInfo = null;
-                $location.path("/login");
-            }, function (error) {
-                console.log(error);
-            });
-    };
-}]);
+        // callback for ng-click 'deleteSurvey':
+        $scope.deleteSurvey = function (surveyId) {
+            surveyFactory.delete({ id: surveyId });
+            $scope.surveys = surveysFactory.query();
+        };
+
+        // callback for ng-click 'createSurvey':
+        $scope.createSurvey = function () {
+            $location.path('/surveys/create');
+        };
+
+        $scope.surveys = surveysFactory.query();
+        
+    }]);

@@ -1,5 +1,5 @@
 //Define an angular module for our app
-var app = angular.module('udgSurveys', ['ngRoute']);
+var app = angular.module('udgSurveys', ['ngRoute', 'ngResource']);
 
 //Define Routing for app
 app.config(function($routeProvider) {
@@ -13,7 +13,15 @@ app.config(function($routeProvider) {
 	}).
       when('/surveys', {
 		templateUrl: 'templates/surveys.html',
-		controller: 'surveysController',
+		controller: 'surveysController'
+	}).
+      when('/surveys/create', {
+		templateUrl: 'templates/surveys/create.html',
+		controller: 'surveyController'
+	}).
+      when('/incentives', {
+		templateUrl: 'templates/incentives.html',
+		controller: 'incentivesController',
 		resolve: {
 			auth: function($q, authService) {
 				var userInfo = authService.getUserInfo();
@@ -26,14 +34,6 @@ app.config(function($routeProvider) {
 			}
 		}
 	}).
-      when('/surveys/create', {
-		templateUrl: 'templates/surveys/create.html',
-		controller: 'surveysController'
-	}).
-      when('/incentives', {
-		templateUrl: 'templates/incentives.html',
-		controller: 'incentivesController'
-	}).
       when('/users', {
 		templateUrl: 'templates/users.html',
 		controller: 'usersController'
@@ -43,6 +43,14 @@ app.config(function($routeProvider) {
 		//redirectTo: '/404'
       });
 });
+
+app.config(['$httpProvider', function($httpProvider) {
+	//$httpProvider.defaults.withCredentials = true;
+	$httpProvider.defaults.useXDomain = true;
+    delete $httpProvider.defaults.headers.common['X-Requested-With'];
+}]);
+
+
 
 app.run(["$rootScope", "$location", function ($rootScope, $location) {
 

@@ -1,16 +1,16 @@
 app.factory("authService", function($http, $q, $window) {
     var userInfo;
 
-    function login(userName, password) {
+    function login(user, password) {
         var deferred = $q.defer();
 
-        $http.post("/api/login", {
-            userName: userName,
+        $http.post("http://192.168.1.74:3000/api/login", {
+            user: user,
             password: password
         }).then(function(result) {
             userInfo = {
-              accessToken: result.data.access_token,
-              userName: result.data.userName
+              accessToken: result.data.token,
+              user: user
             };
             $window.sessionStorage["userInfo"] = JSON.stringify(userInfo);
             deferred.resolve(userInfo);
@@ -26,7 +26,7 @@ app.factory("authService", function($http, $q, $window) {
 
         $http({
             method: "POST",
-            url: "/api/logout",
+            url: "http://192.168.1.74:300/api/logout",
             headers: {
                 "access_token": userInfo.accessToken
             }
