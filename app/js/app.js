@@ -15,8 +15,12 @@ app.config(function($routeProvider) {
 		templateUrl: 'templates/surveys.html',
 		controller: 'surveysController'
 	}).
+      when('/surveys/:id', {
+		templateUrl: 'templates/surveys/survey.html',
+		controller: 'surveyController'
+	}).
       when('/surveys/create', {
-		templateUrl: 'templates/surveys/create.html',
+		templateUrl: 'templates/surveys/survey.html',
 		controller: 'surveyController'
 	}).
       when('/incentives', {

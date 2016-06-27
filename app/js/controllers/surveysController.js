@@ -3,7 +3,7 @@ app.controller('surveysController', ['$scope', '$location', 'authService', 'surv
         //$scope.userInfo = auth;
 
         // callback for ng-click 'editSurvey':
-        $scope.editSurvey = function (userId) {
+        $scope.editSurvey = function (surveyId) {
             $location.path('/surveys/' + surveyId);
         };
 

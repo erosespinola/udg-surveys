@@ -15,6 +15,7 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
         // callback for ng-click 'createNewSurvey':
         $scope.createNewSurvey = function () {
             surveysFactory.create($scope.survey);
+            console.log($scope.survey);
             $location.path('/surveys');
         }
 
@@ -33,6 +34,7 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
             // Add object to $scope.questions
             console.log("Testing");
             $scope.questions.push($scope.question);
+            $scope.survey.questions = $scope.questions;
             $scope.clearQuestion();
         }
 
