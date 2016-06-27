@@ -1,5 +1,6 @@
-app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'surveysFactory', 'surveyFactory', '$location',
-    function ($scope, $routeParams, authService, surveysFactory, surveyFactory, $location) {
+app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'surveysFactory', 'surveyFactory', 'questionsFactory', 'questionFactory', 'answerFactory', '$location',
+    function ($scope, $routeParams, authService, surveysFactory, surveyFactory, questionsFactory, questionFactory, answerFactory, $location) {
+        
         $scope.types = ["Texto corto", "Texto largo", "Opción múltiple", "Selección múltiple", "Escala"];
 
         $scope.questions = [];
@@ -22,6 +23,12 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
         // callback for ng-click 'updateSurvey':
         $scope.updateSurvey = function () {
             surveyFactory.update($scope.survey);
+            questionFactory.update($scope.survey.questions);
+
+            angular.forEach($scope.survey.questions, function(question, i) {
+                answerFactory.update(question.answers);
+            });
+
             $location.path('/surveys');
         };
 
@@ -33,14 +40,13 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
         $scope.addQuestion = function () {
             // Add object to $scope.questions
             console.log("Testing");
-            $scope.questions.push($scope.question);
-            $scope.survey.questions = $scope.questions;
+            $scope.survey.questions.push($scope.question);
             $scope.clearQuestion();
         }
 
         $scope.loadQuestion = function (i) {
             console.log("Loading question " + i);
-            $scope.question = $scope.questions[i];
+            $scope.question = $scope.survey.questions[i];
             $scope.answers = $scope.question.answers;
         }
 
@@ -65,5 +71,7 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
         }
 
         $scope.survey = surveyFactory.show({id: $routeParams.id});
+        $scope.questions = questionsFactory.query({id: $routeParams.id});
+        
     }]);
 

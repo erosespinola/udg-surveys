@@ -19,49 +19,20 @@
                     <th>Estatus</th>
                     <th>Acciones</th>
                 </tr>
-                <tr>
-                    <td>Incentivo 1</td>
-                    <td>12/06/2016</td>
-                    <td>Activa</td>
+                <tr ng-repeat="incentive in incentives">
+                    <td>{{incentive.name}}</td>
+                    <td>{{incentive.created_at | date:'dd/MM/yyyy @ h:mma' }}</td>
+                    <td>{{incentive.active}}</td>
                     <td>
                         <div class="actions-container">
-                            <span class="fa fa-pencil" data-toggle="tooltip" data-placement="top" title="Editar"></span>
+                            <span class="fa fa-pencil fa-1-5x" data-toggle="tooltip" data-placement="top" title="Editar"></span>
                             <span data-toggle="modal" data-target="#incentive-modal-status" data-backdrop="static">
-                                <span class="fa fa-toggle-on" data-toggle="tooltip" data-placement="top" title="Cambiar estatus"></span>
+                                <span class="fa fa-toggle-on fa-1-5x" ng-click="updateStatus(incentive.id)" data-toggle="tooltip" data-placement="top" title="Cambiar estatus"></span>
                             </span>
-                            <span class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="Eliminar"></span>
+                            <span class="fa fa-trash fa-1-5x" ng-click="deleteIncentive(incentive.id)" data-toggle="tooltip" data-placement="top" title="Eliminar"></span>
                         </div>
                     </td>
                 </tr>
-                <tr>
-                    <td>Incentivo 1</td>
-                    <td>12/06/2016</td>
-                    <td>Activa</td>
-                    <td>
-                        <div class="actions-container">
-                            <span class="fa fa-pencil" data-toggle="tooltip" data-placement="top" title="Editar"></span>
-                            <span data-toggle="modal" data-target="#incentive-modal-status" data-backdrop="static">
-                                <span class="fa fa-toggle-on" data-toggle="tooltip" data-placement="top" title="Cambiar estatus"></span>
-                            </span>
-                            <span class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="Eliminar"></span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Incentivo 1</td>
-                    <td>12/06/2016</td>
-                    <td>Activa</td>
-                    <td>
-                        <div class="actions-container">
-                            <span class="fa fa-pencil" data-toggle="tooltip" data-placement="top" title="Editar"></span>
-                            <span data-toggle="modal" data-target="#incentive-modal-status" data-backdrop="static">
-                                <span class="fa fa-toggle-on" data-toggle="tooltip" data-placement="top" title="Cambiar estatus"></span>
-                            </span>
-                            <span class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="Eliminar"></span>
-                        </div>
-                    </td>
-                </tr>
-
             </table>
         </div>
     </div>
@@ -77,17 +48,19 @@
 
                 <form>  
                     <div class="incentive-form">
+                        <div class="form-group">
+                            <label>Comentarios</label>
+                            <input class="form-control" type="text" ng-model="incentive.name" />
+                        </div>
                         <div class="form-inline">
                             <div class="form-group">
                                 <div>
                                     <label for="survey-name">Tipo</label>
                                 </div>
-                                <select class="form-control" id="incentive-type">
-                                    <option>Selecciona un tipo</option>
-                                    <option>Tipo 1</option>
-                                    <option>Tipo 2</option>
+                                <select class="form-control" id="incentive-type" ng-model="incentive.type">
+                                    <option ng-repeat="incentiveEntry in incentiveTypes" value={{incentiveEntry.id}}>{{incentiveEntry.value}}</option>
                                 </select>
-                                <button class="btn btn-default pull-right"><span class="fa fa-plus"></span> Agregar tipo</button>
+                                <button class="btn btn-default pull-right" ng-click="clearIncentiveType()" data-toggle="modal" data-target="#incentive-type-modal" data-backdrop="static"><span class="fa fa-plus"></span> Agregar tipo</button>
                             </div>    
                         </div>
                         <div class="form-inline">
@@ -96,10 +69,10 @@
                                     <label for="survey-detail">Condición</label>
                                 </div>
                                 
-                                <select class="form-control">
-                                    <option>Selecciona una condición</option>
+                                <select class="form-control" ng-model="incentive.requirement">
+                                    <option ng-repeat="requirement in requirementTypes" value={{requirement.id}}>{{requirement.value}}</option>
                                 </select>
-                                <button class="btn btn-default pull-right"><span class="fa fa-plus"></span> Agregar condición</button>
+                                <button class="btn btn-default pull-right" ng-click="clearRequirementType()" data-toggle="modal" data-target="#requirement-type-modal" data-backdrop="static"><span class="fa fa-plus"></span> Agregar condición</button>
                             </div>
                         </div>
                         <div class="form-inline">
@@ -108,22 +81,14 @@
                                     <label for="survey-name">Fecha de vigencia</label>
                                 </div>
                                 <label>Inicio: </label>
-                                <input class="form-control" type="date" id="date-start"> 
+                                <input class="form-control" type="date" id="date-start" ng-model="incentive.startAt"> 
                                 <label>Fin:</label>
-                                <input class="form-control" type="date" id="date-end">
+                                <input class="form-control" type="date" id="date-end" ng-model="incentive.endAt">
                             </div>    
                         </div>
                         <div class="form-group">
-                            <label>Archivo</label>
-                            <input class="form-control" type="file">
-                        </div>
-                        <div class="form-group">
-                            <label>Link</label>
-                            <input class="form-control" type="text">
-                        </div>
-                        <div class="form-group">
-                            <label>Dirección</label>
-                            <input class="form-control" type="text">
+                            <label>Comentarios</label>
+                            <textarea class="form-control" type="text" ng-model="incentive.comments"></textarea>
                         </div>
                     </div>
 
@@ -133,11 +98,62 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary">Guardar incentivo</button>
+                <button type="button" class="btn btn-primary" ng-click="createIncentive()">Guardar incentivo</button>
             </div>
         </div>
     </div>
 </div>
+
+
+<div class="modal fade" id="incentive-type-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Agregar tipo de incentivo</h4>
+            </div>
+            <div class="modal-body">
+
+                <form>
+                    <div class="form-group">
+                        <label>Tipo de incentivo</label>
+                        <input class="form-control" type="text" ng-model="incentiveType.value">
+                    </div>
+                </form>
+            
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" ng-click="addIncentiveType()">Guardar tipo</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="requirement-type-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Agregar condición</h4>
+            </div>
+            <div class="modal-body">
+
+                <form>
+                    <div class="form-group">
+                        <label>Tipo de condición</label>
+                        <input class="form-control" type="text" ng-model="requirementType.value">
+                    </div>
+                </form>
+            
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" ng-click="addRequirementType()">Guardar condición</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <div class="modal fade" id="incentive-modal-status" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -166,3 +182,4 @@
         </div>
     </div>
 </div>
+
