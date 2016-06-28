@@ -48,7 +48,7 @@ exports.update = function(req, res) {
 
 exports.delete = function(req, res) {
 	var id = req.params.id;
-	RequirementType.destroy({ where: { id: id } }).then(function(requirementType) {
+	RequirementType.destroy({ where: { id: id }}).then(function(requirementType) {
 		return res.status(200).json(requirementType);
 	}).catch(function(err) {
 		return res.status(500).json({ error: err });

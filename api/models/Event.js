@@ -30,7 +30,7 @@ var Event = database.define('event', {
 
 Event.belongsTo(EventType, {
 	foreignKey: 'type',
-	as: 'event_type'
+	as: 'eventType'
 });
 
 module.exports = Event;

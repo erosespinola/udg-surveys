@@ -59,7 +59,7 @@ exports.update = function(req, res) {
 
 exports.delete = function(req, res) {
 	var id = req.params.id;
-	User.destroy({ where: { id: id } }).then(function(user) {
+	User.destroy({ where: { id: id }}).then(function(user) {
 		return res.status(200).json(user);
 	}).catch(function(err) {
 		return res.status(500).json({ error: err });

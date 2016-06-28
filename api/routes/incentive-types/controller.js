@@ -48,7 +48,7 @@ exports.update = function(req, res) {
 
 exports.delete = function(req, res) {
 	var id = req.params.id;
-	IncentiveType.destroy({ where: { id: id } }).then(function(incentiveType) {
+	IncentiveType.destroy({ where: { id: id }}).then(function(incentiveType) {
 		return res.status(200).json(incentiveType);
 	}).catch(function(err) {
 		return res.status(500).json({ error: err });

@@ -23,6 +23,9 @@ var Incentive = database.define('incentive', {
 	type: {
 		type: Sequelize.INTEGER
 	},
+	name: {
+		type: Sequelize.STRING
+	},
 	requirement: {
 		type: Sequelize.INTEGER
 	},
@@ -39,12 +42,12 @@ var Incentive = database.define('incentive', {
 
 Incentive.belongsTo(IncentiveType, {
 	foreignKey: 'type',
-	as: 'incentive_type'
+	as: 'incentiveType'
 });
 
 Incentive.belongsTo(RequirementType, {
-	foreignKey: 'type',
-	as: 'requirement_type'
+	foreignKey: 'requirement',
+	as: 'requirementType'
 })
 
 module.exports = Incentive;

@@ -56,13 +56,6 @@ CREATE TABLE IF NOT EXISTS `incentives` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `incentives`
---
-
-INSERT INTO `incentives` (`id`, `type`, `requirement`, `comments`, `active`, `start_at`, `end_at`, `created_at`, `updated_at`) VALUES
-(2, 1, 1, 'Just for grad', 0, '2015-07-23 12:00:00', '2015-07-23 12:00:00', '2016-06-22 05:57:31', '2016-06-24 06:13:56');
-
 -- --------------------------------------------------------
 
 --
@@ -78,13 +71,6 @@ CREATE TABLE IF NOT EXISTS `events` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `events`
---
-
-INSERT INTO `events` (`id`, `type`, `name`, `description`, `likes`, `created_at`, `updated_at`) VALUES
-(2, 1, 'una cosa', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 0, '2016-06-22 05:57:31', '2016-06-24 06:13:56');
 
 -- --------------------------------------------------------
 
@@ -102,13 +88,6 @@ CREATE TABLE IF NOT EXISTS `newsletters` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `newsletters`
---
-
-INSERT INTO `newsletters` (`id`, `type`, `name`, `value`, `likes`, `created_at`, `updated_at`) VALUES
-(2, 1, 'test name', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 10, '2016-06-22 05:57:31', '2016-06-24 06:13:56');
-
 -- --------------------------------------------------------
 
 --
@@ -119,13 +98,6 @@ CREATE TABLE IF NOT EXISTS `incentive_types` (
   `id` int(11) NOT NULL,
   `value` varchar(128) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `incentive_types`
---
-
-INSERT INTO `incentive_types` (`id`, `value`) VALUES
-(1, 'Efectivo');
 
 -- --------------------------------------------------------
 
@@ -138,13 +110,6 @@ CREATE TABLE IF NOT EXISTS `newsletter_types` (
   `value` varchar(128) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `incentive_types`
---
-
-INSERT INTO `newsletter_types` (`id`, `value`) VALUES
-(1, 'Noticia');
-
 -- --------------------------------------------------------
 
 --
@@ -156,12 +121,6 @@ CREATE TABLE IF NOT EXISTS `requirement_types` (
   `value` varchar(128) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `incentive_types`
---
-
-INSERT INTO `requirement_types` (`id`, `value`) VALUES
-(1, 'Identificación');
 -- --------------------------------------------------------
 
 --
@@ -175,15 +134,6 @@ CREATE TABLE IF NOT EXISTS `surveys` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `surveys`
---
-
-INSERT INTO `surveys` (`id`, `name`, `active`, `created_at`, `updated_at`) VALUES
-(6, 'Grad survey', 1, '2016-06-21 05:24:10', '2016-06-21 05:45:40');
-
--- --------------------------------------------------------
 
 --
 -- Table structure for table `users`
@@ -315,7 +265,7 @@ ALTER TABLE `users`
 --
 ALTER TABLE `incentives`
   ADD CONSTRAINT `incentive_type` FOREIGN KEY (`type`) REFERENCES `incentive_types` (`id`);
-  ADD CONSTRAINT `requirement_type` FOREIGN KEY (`type`) REFERENCES `requirement_types` (`id`);
+  ADD CONSTRAINT `requirement_type` FOREIGN KEY (`requirement`) REFERENCES `requirement_types` (`id`);
 --
 -- Constraints for table `newsletters`
 --

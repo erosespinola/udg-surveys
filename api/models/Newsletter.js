@@ -14,7 +14,7 @@ var Newsletter = database.define('newsletter', {
 	name: {
 		type: Sequelize.STRING
 	},
-  value: {
+  description: {
     type: Sequelize.STRING
   },
   likes: {
@@ -30,7 +30,7 @@ var Newsletter = database.define('newsletter', {
 
 Newsletter.belongsTo(NewsletterType, {
 	foreignKey: 'type',
-	as: 'newsletter_type'
+	as: 'newsletterType'
 });
 
 module.exports = Newsletter;

@@ -14,7 +14,7 @@ exports.login = function(req, res) {
 			return res.status(401).json({ error: 'Usuario inválido' });
 		}
 		else if (req.body.password === user.get('password')) {
-			var token = jwt.sign({ user: user.get('email') }, secret, { expiresIn: '1h' });
+			var token = jwt.sign({ user: user.get('email') }, secret, { expiresIn: '12h' });
 			return res.status(200).json({ token: token });
 		} 
 		else {

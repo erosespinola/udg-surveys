@@ -48,7 +48,7 @@ exports.update = function(req, res) {
 
 exports.delete = function(req, res) {
 	var id = req.params.id;
-	NewsletterType.destroy({ where: { id: id } }).then(function(newsletterType) {
+	NewsletterType.destroy({ where: { id: id }}).then(function(newsletterType) {
 		return res.status(200).json(newsletterType);
 	}).catch(function(err) {
 		return res.status(500).json({ error: err });
