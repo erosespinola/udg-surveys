@@ -39,17 +39,20 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
 
         $scope.addQuestion = function () {
             // Add object to $scope.questions
-            console.log("Testing");
-            $scope.survey.questions.push($scope.question);
+            //$scope.survey.questions.push($scope.question);
+
+            $scope.questions.push($scope.question);
+            $scope.survey.questions = $scope.questions;
             $scope.clearQuestion();
         }
 
         $scope.loadQuestion = function (i) {
             console.log("Loading question " + i);
-            $scope.question = $scope.survey.questions[i];
+            $scope.question = $scope.questions[i];
             $scope.answers = $scope.question.answers;
         }
 
+        // Clean the scope used in dom
         $scope.clearQuestion = function () {
             $scope.question = {
                 answers: []
@@ -57,6 +60,10 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
         }
 
         $scope.addAnswer = function () {
+            if ($scope.survey.id) { // Editing
+            } else { // New
+                
+            }
             $scope.question.answers.push($scope.answer);
             $scope.clearAnswer();
         }
@@ -66,6 +73,7 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
             $scope.answer = $scope.question.answers[i];
         } 
 
+        // Clean the scope used in dom
         $scope.clearAnswer = function () {
             $scope.answer = ""
         }
