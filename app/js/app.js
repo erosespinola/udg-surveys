@@ -1,5 +1,5 @@
 //Define an angular module for our app
-var app = angular.module('udgSurveys', ['ngRoute']);
+var app = angular.module('udgSurveys', ['ngRoute', 'ngResource']);
 
 //Define Routing for app
 app.config(function($routeProvider) {
@@ -7,21 +7,40 @@ app.config(function($routeProvider) {
       when('/', {
 		template: 'Work in progress'
 	}).
+      when('/login', {
+		templateUrl: 'templates/login.html',
+		controller: 'loginController'
+	}).
       when('/surveys', {
 		templateUrl: 'templates/surveys.html',
 		controller: 'surveysController'
 	}).
+      when('/surveys/:id', {
+		templateUrl: 'templates/surveys/survey.html',
+		controller: 'surveyController'
+	}).
       when('/surveys/create', {
-		templateUrl: 'templates/surveys/create.html',
-		controller: 'surveysController'
+		templateUrl: 'templates/surveys/survey.html',
+		controller: 'surveyController'
 	}).
       when('/incentives', {
 		templateUrl: 'templates/incentives.html',
-		controller: 'surveysController'
+		controller: 'incentivesController',
+		resolve: {
+			auth: function($q, authService) {
+				var userInfo = authService.getUserInfo();
+
+				if (userInfo) {
+					return $q.when(userInfo);
+				} else {
+					return $q.reject({ authenticated: false });
+				}
+			}
+		}
 	}).
       when('/users', {
 		templateUrl: 'templates/users.html',
-		controller: 'surveysController'
+		controller: 'usersController'
 	}).
       otherwise({
       	template: 'Testing default route'
@@ -29,7 +48,27 @@ app.config(function($routeProvider) {
       });
 });
 
+app.config(['$httpProvider', function($httpProvider) {
+	//$httpProvider.defaults.withCredentials = true;
+	$httpProvider.defaults.useXDomain = true;
+    delete $httpProvider.defaults.headers.common['X-Requested-With'];
+}]);
 
-app.controller('surveysController', function($scope) {
-	
-});
+
+
+app.run(["$rootScope", "$location", function ($rootScope, $location) {
+
+    $rootScope.$on("$routeChangeSuccess", function (userInfo) {
+        console.log(userInfo);
+    });
+
+    $rootScope.$on("$routeChangeError", function (event, current, previous, eventObj) {
+        if (eventObj.authenticated === false) {
+            $location.path("/login");
+        }
+    });
+}]);
+
+
+
+

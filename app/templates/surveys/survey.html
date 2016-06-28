@@ -1,0 +1,143 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+
+            <form>
+                <div class="survey-form">
+                    <div class="form-group">
+                        <label for="survey-name">Nombre</label>
+                        <input type="text" class="form-control survey-name" id="survey-name" placeholder="Encuesta" ng-model="survey.name">
+                    </div>
+                    <!--
+                    <div class="form-group">
+                        <label for="survey-name">Descripción</label>
+                        <textarea class="form-control" rows="2" placeholder="Descripción de la encuesta" ng-model="description"></textarea>
+                    </div>    
+                    -->
+                </div>
+                <table class="table table-hover">
+                    <tr ng-repeat="(i, question) in questions">
+                        <td>
+                            <div class="question-container clearfix" ng-click="loadQuestion(i)" data-toggle="modal" data-target="#survey-modal-detail">
+                                <span class="question-name">{{question.question}}</span>
+                                <span class="question-type">{{question.type}}</span>
+                                <span class="question-detail-icon pull-right">
+                                    <span class="fa fa-chevron-right"></span>
+                                </span>
+                            </div>      
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="question-container clearfix" ng-click="clearQuestion()" data-toggle="modal" data-target="#survey-modal-detail">
+                                <span class="question-add">
+                                    <span class="fa fa-plus"></span>
+                                    <span> Agregar pregunta</span>
+                                </span>
+                            </div>      
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="secondary-navbar clearfix">
+                    <a type="button" class="btn btn-primary pull-right" ng-show="survey.id" ng-click="UpdateSurvey()">Update</a>
+                    <a type="button" class="btn btn-primary pull-right" ng-hide="survey.id" ng-click="createNewSurvey()">Guardar</a>
+                    <a href="#/surveys" class="btn btn-default pull-right" ng-click="cancel()">Cancelar</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="survey-modal-detail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Pregunta</h4>
+            </div>
+            <div class="modal-body">
+
+                <form>
+
+                    <div class="question-form">
+                        <div class="form-group">
+                            <label for="survey-name">Pregunta</label>
+                            <input type="text" class="form-control" id="survey-name" ng-model="question.question">
+                        </div>
+                        <div class="form-group">
+                            <label for="survey-detail">Detalle</label>
+                            <input type="text" class="form-control" ng-model="question.help">
+                        </div>
+                        <div class="form-group">
+                            <label for="survey-type">Tipo de pregunta</label>
+                            <select id="survey-type" class="form-control" ng-model="question.type">
+                                <option ng-repeat="(key, value) in types" value={{key}}>{{value}}</option>
+                            </select>            
+                        </div>    
+                    </div>
+                    
+                    <div class="answers-container">
+                        <table class="table table-hover">
+                            <tr ng-repeat="(i, answerObj) in question.answers">
+                                <td>
+                                    <div class="question-container clearfix" ng-click="loadAnswer(i)" data-toggle="modal" data-target="#answer-modal">
+                                        <span class="question-name">{{answerObj}}</span>
+                                        <span class="question-detail-icon pull-right">
+                                            <span class="fa fa-chevron-right"></span>
+                                        </span>
+                                    </div>      
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="question-container clearfix" ng-click="clearAnswer()" data-toggle="modal" data-target="#answer-modal">
+                                        <span class="question-add">
+                                            <span class="fa fa-plus"></span>
+                                            <span> Agregar Respuesta</span>
+                                        </span>
+                                    </div>      
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    
+                </form>
+            
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="clearQuestion()" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" ng-click="addQuestion()" data-dismiss="modal">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="answer-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">respuesta</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+
+                    <div class="question-form">
+                        <div class="form-group">
+                            <label for="survey-name">Respuesta</label>
+                            <input type="text" class="form-control" id="survey-name" ng-model="answer">
+                        </div>
+                    </div>
+                    
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="clearAnswer()" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" ng-click="addAnswer()" data-dismiss="modal">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
