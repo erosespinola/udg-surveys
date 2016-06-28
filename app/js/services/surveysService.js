@@ -27,9 +27,15 @@ app.factory('questionFactory', function ($resource, $window) {
     })
 });
 
+app.factory('answersFactory', function ($resource, $window) {
+    return $resource( $window.baseUrl + 'api/' + JSON.parse($window.sessionStorage['userInfo']).token + '/answer-options/question/:id', {}, {
+        show: { method: 'GET', params: {id: '@id'} },
+    })
+});
+
 app.factory('answerFactory', function ($resource, $window) {
-    return $resource( $window.baseUrl + 'api/' + JSON.parse($window.sessionStorage['userInfo']).token + '/answers/:id', {}, {
-        show: { method: 'GET' },
+    return $resource( $window.baseUrl + 'api/' + JSON.parse($window.sessionStorage['userInfo']).token + '/answer-options/:id', {}, {
+        //show: { method: 'GET', params: {id: '@id'} },
         update: { method: 'PUT', params: {id: '@id'} },
         delete: { method: 'DELETE', params: {id: '@id'} }
     })

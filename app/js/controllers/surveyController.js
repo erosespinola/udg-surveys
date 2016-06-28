@@ -1,5 +1,5 @@
-app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'surveysFactory', 'surveyFactory', 'questionsFactory', 'questionFactory', 'answerFactory', '$location',
-    function ($scope, $routeParams, authService, surveysFactory, surveyFactory, questionsFactory, questionFactory, answerFactory, $location) {
+app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'surveysFactory', 'surveyFactory', 'questionsFactory', 'questionFactory', 'answersFactory', 'answerFactory', '$location',
+    function ($scope, $routeParams, authService, surveysFactory, surveyFactory, questionsFactory, questionFactory, answersFactory, answerFactory, $location) {
         
         $scope.types = ["Texto corto", "Texto largo", "Opción múltiple", "Selección múltiple", "Escala"];
 
@@ -50,6 +50,13 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
             console.log("Loading question " + i);
             $scope.question = $scope.questions[i];
             $scope.answers = $scope.question.answers;
+            
+            if ($scope.survey.id) {
+                console.log("Loading answers");
+                $scope.question.answers = answersFactory.query({id: $scope.question.id});
+
+            }
+            
         }
 
         // Clean the scope used in dom
