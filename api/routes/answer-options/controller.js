@@ -39,13 +39,11 @@ exports.update = function(req, res) {
 		var value = req.body.value == null ? answerOption.get('value') : req.body.value;
         var min = req.body.min == null ? answerOption.get('min') : req.body.min;
         var max = req.body.max == null ? answerOption.get('max') : req.body.max;
-        var question = req.body.question == null ? answerOption.get('question') : req.body.question;
         
 		answerOption.update({
 			value: value,
             min: min,
-            max: max,
-            question: question
+            max: max
 		}).then(function(answerOption) {
 			return res.status(200).json(answerOption);
 		}).catch(function(err) {
@@ -54,6 +52,29 @@ exports.update = function(req, res) {
 	}).catch(function(err) {
 		return res.status(500).json({ error: err });
 	});
+};
+
+exports.bulkUpdate = function(req, res) {
+    for (var i = 0; i < req.body.answerOptions.length; i++) {
+        (function(i) {
+            AnswerOption.findById(req.body.answerOptions[i].id).then(function(answerOption) {
+                var value = req.body.answerOptions[i].value == null ? answerOption.get('value') : req.body.answerOptions[i].value;
+                var min = req.body.answerOptions[i].min == null ? answerOption.get('min') : req.body.answerOptions[i].min;
+                var max = req.body.answerOptions[i].max == null ? answerOption.get('max') : req.body.answerOptions[i].max;
+                        
+                answerOption.update({
+                    value: value,
+                    min: min,
+                    max: max
+                }).catch(function(err) {
+                    return res.status(500).json({ error: err });
+                });
+            }).catch(function(err) {
+                return res.status(500).json({ error: err });
+            });
+        })(i);
+    }
+    return res.status(200).json(true);
 };
 
 exports.delete = function(req, res) {

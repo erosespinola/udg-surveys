@@ -40,13 +40,11 @@ exports.update = function(req, res) {
 		var type = req.body.type == null ? question.get('type') : req.body.type;
 		var value = req.body.question == null ? question.get('question') : req.body.question;
     	var help = req.body.help == null ? question.get('help') : req.body.help;
-		var survey = req.body.survey == null ? question.get('survey') : req.body.survey;
         
 		question.update({
 			type: type,
 		    question: value,
-    	    help: help,
-            survey: survey
+    	    help: help
 		}).then(function(question) {
 			return res.status(200).json(question);
 		}).catch(function(err) {
@@ -58,7 +56,26 @@ exports.update = function(req, res) {
 };
 
 exports.bulkUpdate = function(req, res) {
-    
+    for (var i = 0; i < req.body.questions.length; i++) {
+        (function(i) {
+            Question.findById(req.body.questions[i].id).then(function(question) {
+                var type = req.body.questions[i].type == null ? question.get('type') : req.body.questions[i].type;
+                var value = req.body.questions[i].question == null ? question.get('question') : req.body.questions[i].question;
+                var help = req.body.questions[i].help == null ? question.get('help') : req.body.questions[i].help;
+                
+                question.update({
+                    type: type,
+                    question: value,
+                    help: help
+                }).catch(function(err) {
+                    return res.status(500).json({ error: err });
+                });
+            }).catch(function(err) {
+                return res.status(500).json({ error: err });
+            });
+        })(i);
+    }
+    return res.status(200).json(true);
 };
 
 exports.delete = function(req, res) {
