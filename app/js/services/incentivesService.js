@@ -1,14 +1,12 @@
-app.factory('incentivesFactory', function ($resource) {
-	var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE0NjY5OTU4OTUsImV4cCI6MTQ2NzAzOTA5NX0.1fHKc0sZmcJTcG8rofsYUEPpNjgxqHTJ76mbmV09Zmc";
-    return $resource('http://192.168.1.74:3000/api/' + token + '/incentives/', {}, {
+app.factory('incentivesFactory', function ($resource, $window) {
+    return $resource( $window.bassUrl + 'api/' + JSON.parse($window.sessionStorage['userInfo']).token + '/incentives/', {}, {
         query: { method: 'GET', isArray: true },
         create: { method: 'POST' }
     })
 });
 
-app.factory('incentiveFactory', function ($resource) {
-	var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE0NjY5OTU4OTUsImV4cCI6MTQ2NzAzOTA5NX0.1fHKc0sZmcJTcG8rofsYUEPpNjgxqHTJ76mbmV09Zmc";
-    return $resource('http://192.168.1.74:3000/api/' + token + '/incentives/:id', {}, {
+app.factory('incentiveFactory', function ($resource, $window) {
+    return $resource( $window.bassUrl + 'api/' +JSON.parse($window.sessionStorage['userInfo']).token + '/incentives/:id', {}, {
         show: { method: 'GET' },
         update: { method: 'PUT', params: {id: '@id'} },
         delete: { method: 'DELETE', params: {id: '@id'} }

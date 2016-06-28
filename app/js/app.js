@@ -5,7 +5,15 @@ var app = angular.module('udgSurveys', ['ngRoute', 'ngResource']);
 app.config(function($routeProvider) {
     $routeProvider.
       when('/', {
-		template: 'Work in progress'
+		template: 'Work in progress',
+		auth: function($q, authService) {
+				var userInfo = authService.getUserInfo();
+				if (userInfo) {
+					return $q.when(userInfo);
+				} else {
+					return $q.reject({ authenticated: false });
+				}
+			}
 	}).
       when('/login', {
 		templateUrl: 'templates/login.html',
@@ -54,6 +62,10 @@ app.config(['$httpProvider', function($httpProvider) {
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
 }]);
 
+/* API's base url */
+app.run(['$window', function($window) {
+	$window.baseUrl = 'http://rocketsoft.xyz:9000/';
+}]);
 
 
 app.run(["$rootScope", "$location", function ($rootScope, $location) {
