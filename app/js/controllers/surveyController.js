@@ -38,14 +38,38 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
 
         // callback for ng-click 'updateSurvey':
         $scope.updateSurvey = function () {
-            surveyFactory.update($scope.survey);
-            questionFactory.update($scope.survey.questions);
+            var updateQuestions = [];
+            var createQuestions = [];
+            var updateAnswers = [];
+            var createAnswers = [];
 
+            surveyFactory.update($scope.survey);
+
+            
+
+            angular.forEach($scope.survey.questions, function(question, i){
+                if (question.id) {
+                    updateQuestions.push(question);
+                } else {
+                    question.survey = $scope.survey.id;
+                    createQuestions.push(question);
+                }
+                console.log(question);
+            });
+            
+            questionFactory.update({questions: updateQuestions});
+            angular.forEach(createQuestions, function(question, i){
+                questionFactory.create(question);
+            });
+            
+
+            /*
             angular.forEach($scope.survey.questions, function(question, i) {
                 answerFactory.update(question.answers);
             });
 
             $location.path('/surveys');
+            */
         };
 
         // callback for ng-click 'cancel':
