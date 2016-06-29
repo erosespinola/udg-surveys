@@ -4,12 +4,12 @@ app.factory("authService", function($http, $q, $window) {
     function login(user, password) {
         var deferred = $q.defer();
 
-        $http.post("http://192.168.1.74:3000/api/login", {
+        $http.post($window.baseUrl + "api/login", {
             user: user,
             password: password
         }).then(function(result) {
             userInfo = {
-              accessToken: result.data.token,
+              token: result.data.token,
               user: user
             };
             $window.sessionStorage["userInfo"] = JSON.stringify(userInfo);
@@ -21,12 +21,15 @@ app.factory("authService", function($http, $q, $window) {
         return deferred.promise;
     }
 
+    /* 
+        This should remove the session token from $window.sessionStorage
+    */
     function logout() {
         var deferred = $q.defer();
 
         $http({
             method: "POST",
-            url: "http://192.168.1.74:300/api/logout",
+            url: "http://192.168.1.74:3000/api/logout",
             headers: {
                 "access_token": userInfo.accessToken
             }

@@ -54,6 +54,9 @@ app.use('/api/:token/event-types', require('./routes/event-types'));
 app.use('/api/:token/requirement-types', require('./routes/requirement-types'));
 app.use('/api/:token/newsletter-types', require('./routes/newsletter-types'));
 
+app.use('/api/:token/system-status', require('./routes/system-status'));
+app.use('/api/:token/contact', require('./routes/contact'));
+
 // Catch 404 and forward to error handler
 app.route('/*').get(function(req, res) {
     return res.send(404);
