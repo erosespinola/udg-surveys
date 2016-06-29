@@ -20,7 +20,7 @@
                         <td>
                             <div class="question-container clearfix" ng-click="loadQuestion(i)" data-toggle="modal" data-target="#survey-modal-detail">
                                 <span class="question-name">{{question.question}}</span>
-                                <span class="question-type">{{question.type}}</span>
+                                <span class="question-type">{{types[question.type]}}</span>
                                 <span class="question-detail-icon pull-right">
                                     <span class="fa fa-chevron-right"></span>
                                 </span>
@@ -94,7 +94,7 @@
                                     <div class="question-container clearfix" ng-click="clearAnswer()" data-toggle="modal" data-target="#answer-modal">
                                         <span class="question-add">
                                             <span class="fa fa-plus"></span>
-                                            <span> Agregar Respuesta</span>
+                                            <span> Agregar opción de respuesta</span>
                                         </span>
                                     </div>      
                                 </td>

@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS `newsletters` (
   `id` int(11) NOT NULL,
   `type` int(11) NOT NULL,
   `name` varchar(128) NOT NULL,
-  `value` text NOT NULL,
+  `description` text NOT NULL,
   `likes` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP

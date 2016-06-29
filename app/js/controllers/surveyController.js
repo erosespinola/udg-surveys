@@ -1,5 +1,5 @@
-app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'surveysFactory', 'surveyFactory', 'questionsFactory', 'questionFactory', 'answerFactory', '$location',
-    function ($scope, $routeParams, authService, surveysFactory, surveyFactory, questionsFactory, questionFactory, answerFactory, $location) {
+app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'surveysFactory', 'surveyFactory', 'questionsFactory', 'questionFactory', 'answersFactory', 'answerFactory', '$location',
+    function ($scope, $routeParams, authService, surveysFactory, surveyFactory, questionsFactory, questionFactory, answersFactory, answerFactory, $location) {
         
         $scope.types = ["Texto corto", "Texto largo", "Opción múltiple", "Selección múltiple", "Escala"];
 
@@ -39,17 +39,27 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
 
         $scope.addQuestion = function () {
             // Add object to $scope.questions
-            console.log("Testing");
-            $scope.survey.questions.push($scope.question);
+            //$scope.survey.questions.push($scope.question);
+
+            $scope.questions.push($scope.question);
+            $scope.survey.questions = $scope.questions;
             $scope.clearQuestion();
         }
 
         $scope.loadQuestion = function (i) {
             console.log("Loading question " + i);
-            $scope.question = $scope.survey.questions[i];
+            $scope.question = $scope.questions[i];
             $scope.answers = $scope.question.answers;
+            
+            if ($scope.survey.id) {
+                console.log("Loading answers");
+                $scope.question.answers = answersFactory.query({id: $scope.question.id});
+
+            }
+            
         }
 
+        // Clean the scope used in dom
         $scope.clearQuestion = function () {
             $scope.question = {
                 answers: []
@@ -57,6 +67,10 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
         }
 
         $scope.addAnswer = function () {
+            if ($scope.survey.id) { // Editing
+            } else { // New
+                
+            }
             $scope.question.answers.push($scope.answer);
             $scope.clearAnswer();
         }
@@ -66,6 +80,7 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
             $scope.answer = $scope.question.answers[i];
         } 
 
+        // Clean the scope used in dom
         $scope.clearAnswer = function () {
             $scope.answer = ""
         }
