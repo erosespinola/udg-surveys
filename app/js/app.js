@@ -27,11 +27,11 @@ app.config(function($routeProvider) {
 			}
 		}
 	}).
-      when('/login', {
+      when('/login/', {
 		templateUrl: 'templates/login.html',
 		controller: 'loginController'
 	}).
-      when('/surveys', {
+      when('/surveys/', {
 		templateUrl: 'templates/surveys.html',
 		controller: 'surveysController',
 		resolve: {
@@ -49,7 +49,7 @@ app.config(function($routeProvider) {
 			}
 		}
 	}).
-      when('/surveys/create', {
+      when('/surveys/create/', {
 		templateUrl: 'templates/surveys/survey.html',
 		controller: 'surveyController',
 		resolve: {
@@ -58,7 +58,7 @@ app.config(function($routeProvider) {
 			}
 		}
 	}).
-      when('/incentives', {
+      when('/incentives/', {
 		templateUrl: 'templates/incentives.html',
 		controller: 'incentivesController',
 		resolve: {
@@ -67,7 +67,7 @@ app.config(function($routeProvider) {
 			}
 		}
 	}).
-      when('/users', {
+      when('/users/', {
 		templateUrl: 'templates/users.html',
 		controller: 'usersController',
 		resolve: {
@@ -76,7 +76,7 @@ app.config(function($routeProvider) {
 			}
 		}
 	}).
-      when('/logout', {
+      when('/logout/', {
 		templateUrl: 'templates/login.html',
 		controller: 'loginController'
 	}).
@@ -98,11 +98,14 @@ app.run(['$window', function($window) {
 }]);
 
 
-app.run(["$rootScope", "$location", "authService", function ($rootScope, $location, authService) {
+app.run(["$rootScope", "$location", "$route", "authService", function ($rootScope, $location, $route, authService) {
     $rootScope.$on("$routeChangeSuccess", function (userInfo) {
     	if ($location.$$path === "/logout") {
     		authService.logout();
     		$location.path("/login");
+    	} else if ($location.$$path === "/surveys/") {
+    		//console.log("Reload");
+    		//$route.reload();
     	}
     });
 

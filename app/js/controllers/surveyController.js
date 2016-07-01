@@ -33,6 +33,7 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
             } else {
                 surveysFactory.create($scope.survey);
                 $location.path('/surveys');
+                window.location = "#/surveys";
             }
         }
 
