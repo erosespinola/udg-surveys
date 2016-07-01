@@ -32,8 +32,11 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
                 alert("La encuesta debe tener un nombre");
             } else {
                 surveysFactory.create($scope.survey);
-                $location.path('/surveys');
-                window.location = "#/surveys";
+                //$location.path('/surveys/');
+                setTimeout(function () {
+                    $location.path('/surveys');
+                }, 1000);
+
             }
         }
 
@@ -82,7 +85,9 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
                 answerFactory.create(answer)
             });
 
-            $location.path('/surveys');
+            setTimeout(function () {
+                $location.path('/surveys');
+            }, 1000);
         };
 
         // callback for ng-click 'cancel':
