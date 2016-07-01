@@ -126,7 +126,7 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
         */
 
         $scope.saveAnswer = function () {
-            if ($scope.answer.value === undefined) {
+            if (false) { //$scope.answer.value === undefined) {
                 alert("Introduce una respuesta");
             } else {
                 if ($scope.answer.index !== undefined) { // Editing answer
@@ -142,7 +142,14 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
             $scope.answer = $scope.question.answerOptions[i];
             $scope.answer.index = i;
             $scope.editingState.answer = true;
+        }
+
+        $scope.loadMinMax = function () {
+            if ($scope.question.answerOptions[0]) {
+                $scope.answer = $scope.question.answerOptions[0];
+            }
         } 
+
 
         // Clean the scope when adding a new answer
         $scope.clearAnswer = function () {
@@ -153,13 +160,12 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
         // Loading complete survey object...
         $scope.survey = surveyFactory.show({id: $routeParams.id});
         $scope.survey.$promise.then(function(response){
+
             $scope.survey.questions = questionsFactory.query({id: $routeParams.id});
             $scope.survey.questions.$promise.then(function(questionsResponse){
+
                 angular.forEach($scope.survey.questions, function(question, i){
                     $scope.survey.questions[i].answerOptions = answersFactory.query({id: question.id}); 
-                    /*$scope.survey.questions[i].answers.$promise.then(function(answersResponse){
-                        console.log(answersResponse);
-                    });*/
                 });
             });
         });        

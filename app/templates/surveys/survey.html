@@ -88,7 +88,7 @@
                         <table class="table table-hover">
                             <tr ng-repeat="(i, answerObj) in question.answerOptions">
                                 <td>
-                                    <div class="question-container clearfix" ng-click="loadAnswer(i)" data-toggle="modal" data-target="#answer-modal" data-backdrop="static">
+                                    <div class="question-container clearfix" ng-click="loadMinMax()" data-toggle="modal" data-target="#answer-modal" data-backdrop="static">
                                         <span class="question-name">{{answerObj.value}}</span>
                                         <span class="question-detail-icon pull-right">
                                             <span class="fa fa-chevron-right"></span>
@@ -109,7 +109,7 @@
                         </table>
                     </div>
                     <div class="answers-container" ng-show="question.type === 4">
-                        <div class="question-container clearfix" ng-click="clearAnswer()" data-toggle="modal" data-target="#answer-modal" data-backdrop="static">
+                        <div class="question-container clearfix" ng-click="loadAnswer(0)" data-toggle="modal" data-target="#answer-modal" data-backdrop="static">
                             <span class="question-add">
                                 <span class="fa fa-plus"></span>
                                 <span> Definir escala</span>
@@ -141,7 +141,7 @@
                     <div class="question-form">
                         <div class="form-group" ng-show="question.type === 2 || question.type === 3">
                             <label for="survey-name">Respuesta</label>
-                            <input type="text" class="form-control" id="survey-name" ng-model="answer.value">
+                            <input type="text" class="form-control" id="answer-name" ng-model="answer.value">
                         </div>
                         <div class="answers-container" ng-show="question.type === 4">
                             <div class="row">
