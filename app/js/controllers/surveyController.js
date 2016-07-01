@@ -31,6 +31,7 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
             if ($scope.survey.name === undefined || $scope.survey.name === "") {
                 alert("La encuesta debe tener un nombre");
             } else {
+                $scope.survey.active = true;
                 surveysFactory.create($scope.survey);
                 //$location.path('/surveys/');
                 setTimeout(function () {
