@@ -20,7 +20,7 @@
                         <td>
                             <div class="question-container clearfix">
                                 <span class="question-detail-icon">
-                                    <span class="fa fa-close"></span>
+                                    <span class="fa fa-close" ng-click="deleteQuestion(i)"></span>
                                 </span>
                                 <span ng-click="loadQuestion(i)" data-toggle="modal" data-target="#survey-modal-detail" data-backdrop="static">
                                     <span class="question-name">{{questionObj.question}}</span>

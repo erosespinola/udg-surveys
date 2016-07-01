@@ -34,9 +34,9 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
                 surveysFactory.create($scope.survey);
                 //$location.path('/surveys/');
                 setTimeout(function () {
-                    $location.path('/surveys');
-                }, 1000);
-
+                    //$location.path('/surveys');
+                    window.location.href = "#/surveys/";
+                }, 500);
             }
         }
 
@@ -48,8 +48,6 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
             var createAnswers = [];
 
             surveyFactory.update($scope.survey);
-
-            
 
             angular.forEach($scope.survey.questions, function(question, i){
                 if (question.id) {
@@ -86,8 +84,9 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
             });
 
             setTimeout(function () {
-                $location.path('/surveys');
-            }, 1000);
+                console.log("Redireccion");
+                window.location.href = "#/surveys/";
+            }, 500);
         };
 
         // callback for ng-click 'cancel':
@@ -119,6 +118,15 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
             $scope.editingState.question = true;
         }
         
+        $scope.deleteQuestion = function (i) {
+            if ($scope.survey.questions[i].id) {
+                // Delete from server
+                questionFactory.delete({ id: $scope.survey.questions[i].id });
+            }
+            $scope.survey.questions.splice(i, 1);
+            alert("Pregunta eliminada")
+        }
+
         // Clean the scope when adding a new question
         $scope.clearQuestion = function () {
             $scope.question = {
