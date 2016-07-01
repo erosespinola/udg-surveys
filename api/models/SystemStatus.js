@@ -11,7 +11,7 @@ var SystemStatus = database.define('system_status', {
 		autoIncrement: true
 	},
 	value: {
-		type: Sequelize.STRING
+		type: Sequelize.BOOLEAN
 	}
 }, {
     freezeTableName: true,

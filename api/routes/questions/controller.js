@@ -2,7 +2,7 @@
 
 var Question = require('./../../models/Question');
 var Survey = require('./../../models/Survey');
-
+var AnswerOption = require('./../../models/AnswerOption')
 exports.list = function(req, res) {
 	Question.findAll({ where: { survey: req.params.id }, include: [{ model: Survey, as: 'surveyType' }]}).then(function(questions) {
 		return res.status(200).json(questions);
@@ -27,6 +27,10 @@ exports.create = function(req, res) {
     	help: req.body.help,
         survey: req.body.survey
 	}).then(function(question) {
+		console.log("added: " + question.get('question'));
+		if (req.body.answerOptions) {
+			createAnswerOptions(req.body.answerOptions, question.id);
+		}
 		return res.status(200).json(question);
 	}).catch(function(err) {
 		return res.status(500).json({ error: err });
@@ -85,4 +89,21 @@ exports.delete = function(req, res) {
 	}).catch(function(err) {
 		return res.status(500).json({ error: err });
 	});
+};
+
+var createAnswerOptions = function(answerOptions, questionId) {
+	console.log(answerOptions);
+	console.log(questionId);
+	for (var j = 0; j < answerOptions.length; j++) {
+		(function(j) {
+			AnswerOption.create({
+				value: answerOptions[j].value,
+				min: answerOptions[j].min,
+				max: answerOptions[j].max,
+				question: questionId
+			}).catch(function(err) {
+				return res.status(500).json({ error: err });
+			});
+		})(j);
+	}
 };
