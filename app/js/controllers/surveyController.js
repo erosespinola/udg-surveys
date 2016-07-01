@@ -81,16 +81,7 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
                 answerFactory.create(answer)
             });
 
-            
-
-
-            /*
-            angular.forEach($scope.survey.questions, function(question, i) {
-                answerFactory.update(question.answers);
-            });
-
             $location.path('/surveys');
-            */
         };
 
         // callback for ng-click 'cancel':

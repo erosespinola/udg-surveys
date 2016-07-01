@@ -1,6 +1,9 @@
 app.controller('surveysController', ['$scope', '$location', 'authService', 'surveysFactory', 'surveyFactory', 
     function ($scope, $location, authService, surveysFactory, surveyFactory) {
         //$scope.userInfo = auth;
+        $scope.getStatus = function (active) {
+            return (active) ? "Active" : "Inactive" ;
+        };
 
         // callback for ng-click 'editSurvey':
         $scope.editSurvey = function (surveyId) {

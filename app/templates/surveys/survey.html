@@ -18,11 +18,16 @@
                 <table class="table table-hover">
                     <tr ng-repeat="(i, questionObj) in survey.questions">
                         <td>
-                            <div class="question-container clearfix" ng-click="loadQuestion(i)" data-toggle="modal" data-target="#survey-modal-detail" data-backdrop="static">
-                                <span class="question-name">{{questionObj.question}}</span>
-                                <span class="question-type">{{types[questionObj.type].label}}</span>
-                                <span class="question-detail-icon pull-right">
-                                    <span class="fa fa-chevron-right"></span>
+                            <div class="question-container clearfix">
+                                <span class="question-detail-icon">
+                                    <span class="fa fa-close"></span>
+                                </span>
+                                <span ng-click="loadQuestion(i)" data-toggle="modal" data-target="#survey-modal-detail" data-backdrop="static">
+                                    <span class="question-name">{{questionObj.question}}</span>
+                                    <span class="question-type">{{types[questionObj.type].label}}</span>
+                                    <span class="question-detail-icon pull-right">
+                                        <span class="fa fa-chevron-right"></span>
+                                    </span>
                                 </span>
                             </div>      
                         </td>
@@ -102,9 +107,15 @@
                                 </td>
                             </tr>
                         </table>
-
                     </div>
-                    
+                    <div class="answers-container" ng-show="question.type === 4">
+                        <div class="question-container clearfix" ng-click="clearAnswer()" data-toggle="modal" data-target="#answer-modal" data-backdrop="static">
+                            <span class="question-add">
+                                <span class="fa fa-plus"></span>
+                                <span> Definir escala</span>
+                            </span>
+                        </div>      
+                    </div>
                 </form>
             
             </div>
@@ -128,9 +139,25 @@
                 <form>
 
                     <div class="question-form">
-                        <div class="form-group">
+                        <div class="form-group" ng-show="question.type === 2 || question.type === 3">
                             <label for="survey-name">Respuesta</label>
                             <input type="text" class="form-control" id="survey-name" ng-model="answer.value">
+                        </div>
+                        <div class="answers-container" ng-show="question.type === 4">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Min</label>
+                                        <input type="text" class="form-control" ng-model="answer.min">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Max</label>
+                                        <input type="text" class="form-control" ng-model="answer.max">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     

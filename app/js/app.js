@@ -25,25 +25,15 @@ app.config(function($routeProvider) {
 		resolve: {
 			auth: function($q, authService) {
 				var userInfo = authService.getUserInfo();
-				console.log(userInfo);
-				
 				var currentDate = new Date();
-				//currentDate.setHours(currentDate.getHours());
-				console.log(userInfo.expires_on)
-				console.log(typeof new Date(userInfo.expires_on));
-				console.log(typeof currentDate);
 
 				if (userInfo) {
 					if (currentDate <= userInfo.expires_on) {
-						console.log("Valid session");
-
 						return $q.when(userInfo);	
 					} else {
-						console.log("Invalid session 1");
 						return $q.reject({ authenticated: false });
 					}
 				} else {
-					console.log("Invalida session 2");
 					return $q.reject({ authenticated: false });
 				}
 			}
@@ -59,23 +49,7 @@ app.config(function($routeProvider) {
 	}).
       when('/incentives', {
 		templateUrl: 'templates/incentives.html',
-		controller: 'incentivesController',
-		resolve: {
-			auth: function($q, authService) {
-				var userInfo = authService.getUserInfo();
-
-				if (userInfo) {
-					// Add extra validation
-					if (userInfo.expires_on < Date()) {
-						return $q.when(userInfo);	
-					} else {
-						return $q.reject({ authenticated: false });
-					}
-				} else {
-					return $q.reject({ authenticated: false });
-				}
-			}
-		}
+		controller: 'incentivesController'
 	}).
       when('/users', {
 		templateUrl: 'templates/users.html',
@@ -100,9 +74,7 @@ app.run(['$window', function($window) {
 
 
 app.run(["$rootScope", "$location", function ($rootScope, $location) {
-
     $rootScope.$on("$routeChangeSuccess", function (userInfo) {
-        console.log(userInfo);
     });
 
     $rootScope.$on("$routeChangeError", function (event, current, previous, eventObj) {
