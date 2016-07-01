@@ -1,5 +1,5 @@
 app.factory("authService", function($http, $q, $window) {
-    var userInfo;
+    
 
     function login(user, password) {
         var deferred = $q.defer();
@@ -8,12 +8,14 @@ app.factory("authService", function($http, $q, $window) {
             user: user,
             password: password
         }).then(function(result) {
-            userInfo = {
-              token: result.data.token,
-              user: user
-            };
-            $window.sessionStorage["userInfo"] = JSON.stringify(userInfo);
-            deferred.resolve(userInfo);
+            // Calculate expiration date (10 hours) 
+            var expiration_date = new Date();
+            expiration_date.setHours(expiration_date.getHours() + 10);
+
+            localStorage.setItem("token", result.data.token);
+            localStorage.setItem("expires_on", expiration_date);
+
+            deferred.resolve(localStorage.token);
         }, function(error) {
             deferred.reject(error);
         });
@@ -45,15 +47,8 @@ app.factory("authService", function($http, $q, $window) {
     }
 
     function getUserInfo() {
-        return userInfo;
+        return {token: localStorage.token, expires_on: (new Date(localStorage.expires_on))};
     }
-
-    function init() {
-        if ($window.sessionStorage["userInfo"]) {
-            userInfo = JSON.parse($window.sessionStorage["userInfo"]);
-        }
-    }
-    init();
 
     return {
         login: login,

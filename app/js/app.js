@@ -21,7 +21,33 @@ app.config(function($routeProvider) {
 	}).
       when('/surveys', {
 		templateUrl: 'templates/surveys.html',
-		controller: 'surveysController'
+		controller: 'surveysController',
+		resolve: {
+			auth: function($q, authService) {
+				var userInfo = authService.getUserInfo();
+				console.log(userInfo);
+				
+				var currentDate = new Date();
+				//currentDate.setHours(currentDate.getHours());
+				console.log(userInfo.expires_on)
+				console.log(typeof new Date(userInfo.expires_on));
+				console.log(typeof currentDate);
+
+				if (userInfo) {
+					if (currentDate <= userInfo.expires_on) {
+						console.log("Valid session");
+
+						return $q.when(userInfo);	
+					} else {
+						console.log("Invalid session 1");
+						return $q.reject({ authenticated: false });
+					}
+				} else {
+					console.log("Invalida session 2");
+					return $q.reject({ authenticated: false });
+				}
+			}
+		}
 	}).
       when('/surveys/:id', {
 		templateUrl: 'templates/surveys/survey.html',
@@ -39,7 +65,12 @@ app.config(function($routeProvider) {
 				var userInfo = authService.getUserInfo();
 
 				if (userInfo) {
-					return $q.when(userInfo);
+					// Add extra validation
+					if (userInfo.expires_on < Date()) {
+						return $q.when(userInfo);	
+					} else {
+						return $q.reject({ authenticated: false });
+					}
 				} else {
 					return $q.reject({ authenticated: false });
 				}
@@ -53,7 +84,7 @@ app.config(function($routeProvider) {
       otherwise({
       	template: 'Testing default route'
 		//redirectTo: '/404'
-      });
+    });
 });
 
 app.config(['$httpProvider', function($httpProvider) {
@@ -64,7 +95,7 @@ app.config(['$httpProvider', function($httpProvider) {
 
 /* API's base url */
 app.run(['$window', function($window) {
-	$window.baseUrl = 'http://rocketsoft.xyz:9000/';
+	$window.baseUrl = 'http://107.170.214.114:9000/';
 }]);
 
 

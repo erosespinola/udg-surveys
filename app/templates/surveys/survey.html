@@ -81,7 +81,7 @@
                     
                     <div class="answers-container" ng-show="question.type === 2 || question.type === 3">
                         <table class="table table-hover">
-                            <tr ng-repeat="(i, answerObj) in question.answers">
+                            <tr ng-repeat="(i, answerObj) in question.answerOptions">
                                 <td>
                                     <div class="question-container clearfix" ng-click="loadAnswer(i)" data-toggle="modal" data-target="#answer-modal" data-backdrop="static">
                                         <span class="question-name">{{answerObj.value}}</span>

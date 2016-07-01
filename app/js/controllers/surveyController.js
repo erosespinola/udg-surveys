@@ -13,7 +13,7 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
         // Variables to keep values before saving in the $scope.survey object.
         $scope.answer = {};
         $scope.question = {
-            answers: []
+            answerOptions: []
         };
         
         /* Used to show/hide part of the DOM */        
@@ -50,9 +50,22 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
             angular.forEach($scope.survey.questions, function(question, i){
                 if (question.id) {
                     updateQuestions.push(question);
+
+                    angular.forEach(question.answerOptions, function(answer, i) {
+                        if (answer.id) {
+                            updateAnswers.push(answer);
+                        } else {
+                            answer.question = question.id;
+                            createAnswers.push(answer);
+                        }
+                    });
                 } else {
                     question.survey = $scope.survey.id;
                     createQuestions.push(question);
+                    angular.forEach(question.answerOptions, function(answer, i){
+                        answerFactory.create(answer);
+                    });
+                    
                 }
                 console.log(question);
             });
@@ -61,7 +74,15 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
             angular.forEach(createQuestions, function(question, i){
                 questionFactory.create(question);
             });
+
+            answerFactory.update({answerOptions: updateAnswers});
+            angular.forEach(createAnswers, function(answer, i){
+                console.log("Creatating answer");
+                answerFactory.create(answer)
+            });
+
             
+
 
             /*
             angular.forEach($scope.survey.questions, function(question, i) {
@@ -104,7 +125,7 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
         // Clean the scope when adding a new question
         $scope.clearQuestion = function () {
             $scope.question = {
-                answers: []
+                answerOptions: []
             };
             $scope.editingState.question = false;
         }
@@ -118,16 +139,16 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
                 alert("Introduce una respuesta");
             } else {
                 if ($scope.answer.index !== undefined) { // Editing answer
-                    $scope.question.answers[$scope.answer.index] = $scope.answer;
+                    $scope.question.answerOptions[$scope.answer.index] = $scope.answer;
                 } else { // New answer
-                    $scope.question.answers.push($scope.answer);
+                    $scope.question.answerOptions.push($scope.answer);
                 }
             }
             $scope.clearAnswer();
         }
 
         $scope.loadAnswer = function (i) {
-            $scope.answer = $scope.question.answers[i];
+            $scope.answer = $scope.question.answerOptions[i];
             $scope.answer.index = i;
             $scope.editingState.answer = true;
         } 
@@ -144,7 +165,7 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
             $scope.survey.questions = questionsFactory.query({id: $routeParams.id});
             $scope.survey.questions.$promise.then(function(questionsResponse){
                 angular.forEach($scope.survey.questions, function(question, i){
-                    $scope.survey.questions[i].answers = answersFactory.query({id: question.id}); 
+                    $scope.survey.questions[i].answerOptions = answersFactory.query({id: question.id}); 
                     /*$scope.survey.questions[i].answers.$promise.then(function(answersResponse){
                         console.log(answersResponse);
                     });*/
