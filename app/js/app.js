@@ -3,17 +3,29 @@ var app = angular.module('udgSurveys', ['ngRoute', 'ngResource']);
 
 //Define Routing for app
 app.config(function($routeProvider) {
+	var resolveLogin = function ($q, authService) {
+		var userInfo = authService.getUserInfo();
+		var currentDate = new Date();
+
+		if (userInfo) {
+			if (currentDate <= userInfo.expires_on) {
+				return $q.when(userInfo);	
+			} else {
+				return $q.reject({ authenticated: false });
+			}
+		} else {
+			return $q.reject({ authenticated: false });
+		}
+	};
+
     $routeProvider.
       when('/', {
 		template: 'Work in progress',
-		auth: function($q, authService) {
-				var userInfo = authService.getUserInfo();
-				if (userInfo) {
-					return $q.when(userInfo);
-				} else {
-					return $q.reject({ authenticated: false });
-				}
+		resolve: {
+			auth: function($q, authService) {
+				return resolveLogin($q, authService);
 			}
+		}
 	}).
       when('/login', {
 		templateUrl: 'templates/login.html',
@@ -24,36 +36,49 @@ app.config(function($routeProvider) {
 		controller: 'surveysController',
 		resolve: {
 			auth: function($q, authService) {
-				var userInfo = authService.getUserInfo();
-				var currentDate = new Date();
-
-				if (userInfo) {
-					if (currentDate <= userInfo.expires_on) {
-						return $q.when(userInfo);	
-					} else {
-						return $q.reject({ authenticated: false });
-					}
-				} else {
-					return $q.reject({ authenticated: false });
-				}
+				return resolveLogin($q, authService);
 			}
 		}
 	}).
       when('/surveys/:id', {
 		templateUrl: 'templates/surveys/survey.html',
-		controller: 'surveyController'
+		controller: 'surveyController',
+		resolve: {
+			auth: function($q, authService) {
+				return resolveLogin($q, authService);
+			}
+		}
 	}).
       when('/surveys/create', {
 		templateUrl: 'templates/surveys/survey.html',
-		controller: 'surveyController'
+		controller: 'surveyController',
+		resolve: {
+			auth: function($q, authService) {
+				return resolveLogin($q, authService);
+			}
+		}
 	}).
       when('/incentives', {
 		templateUrl: 'templates/incentives.html',
-		controller: 'incentivesController'
+		controller: 'incentivesController',
+		resolve: {
+			auth: function($q, authService) {
+				return resolveLogin($q, authService);
+			}
+		}
 	}).
       when('/users', {
 		templateUrl: 'templates/users.html',
-		controller: 'usersController'
+		controller: 'usersController',
+		resolve: {
+			auth: function($q, authService) {
+				return resolveLogin($q, authService);
+			}
+		}
+	}).
+      when('/logout', {
+		templateUrl: 'templates/login.html',
+		controller: 'loginController'
 	}).
       otherwise({
       	template: 'Testing default route'
@@ -73,8 +98,12 @@ app.run(['$window', function($window) {
 }]);
 
 
-app.run(["$rootScope", "$location", function ($rootScope, $location) {
+app.run(["$rootScope", "$location", "authService", function ($rootScope, $location, authService) {
     $rootScope.$on("$routeChangeSuccess", function (userInfo) {
+    	if ($location.$$path === "/logout") {
+    		authService.logout();
+    		$location.path("/login");
+    	}
     });
 
     $rootScope.$on("$routeChangeError", function (event, current, previous, eventObj) {

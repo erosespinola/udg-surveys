@@ -18,4 +18,13 @@ app.controller("loginController", ["$scope", "$location", "$window", "authServic
                     console.log(error);
                 });
         };
+
+        // Not used, check authService
+        $scope.logout = function () {
+            authService.logout().then(function (result) {
+                $location.path("/login");
+            }, function (error) {
+                $location.path("/login");
+            });
+        }
     }]); 

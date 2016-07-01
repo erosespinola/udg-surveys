@@ -28,21 +28,9 @@ app.factory("authService", function($http, $q, $window) {
     */
     function logout() {
         var deferred = $q.defer();
-
-        $http({
-            method: "POST",
-            url: "http://192.168.1.74:3000/api/logout",
-            headers: {
-                "access_token": userInfo.accessToken
-            }
-        }).then(function (result) {
-            userInfo = null;
-            $window.sessionStorage["userInfo"] = null;
-            deferred.resolve(result);
-        }, function (error) {
-            deferred.reject(error);
-        });
-
+        localStorage.removeItem("token");
+        localStorage.removeItem("expires_on");
+        deferred.resolve();
         return deferred.promise;
     }
 
