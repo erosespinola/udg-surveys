@@ -20,10 +20,13 @@
                 <tr ng-repeat="incentive in incentives">
                     <td>{{incentive.name}}</td>
                     <td>{{incentive.created_at | date:'dd/MM/yyyy @ h:mma' }}</td>
-                    <td>{{incentive.active}}</td>
+                    <td>{{getStatus(incentive.active)}}</td>
                     <td>
                         <div class="actions-container">
-                            <span class="fa fa-pencil fa-1-5x" data-toggle="tooltip" data-placement="top" title="Editar"></span>
+                            <span data-toggle="modal" data-target="#incentive-modal-detail" data-backdrop="static">
+                                <span class="fa fa-pencil fa-1-5x" ng-click="editIncentive(incentive)" data-toggle="tooltip" data-placement="top" title="Editar"></span>
+                            </span>
+
                             <span data-toggle="modal" data-target="#incentive-modal-status" data-backdrop="static">
                                 <span class="fa fa-toggle-on fa-1-5x" ng-click="updateStatus(incentive.id)" data-toggle="tooltip" data-placement="top" title="Cambiar estatus"></span>
                             </span>
@@ -35,6 +38,10 @@
         </div>
     </div>
 </div>
+
+<!--
+    Incentive form
+-->
 
 <div class="modal fade" id="incentive-modal-detail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -55,9 +62,13 @@
                             <div class="col-md-8">
                                 <div class="form-group">
                                     <label for="survey-name">Tipo</label>
-                                    <select class="form-control" id="incentive-type" ng-model="incentive.type">
-                                        <option ng-repeat="incentiveEntry in incentiveTypes" value={{incentiveEntry.id}}>{{incentiveEntry.value}}</option>
-                                    </select>
+
+
+                                    <select id="incentive-type" class="form-control" ng-model="incentive.type" ng-options="type.id as (type.value) for type in incentiveTypes">
+                                        <option>- Incentivo -</option>
+                                    </select>            
+
+
                                 </div>   
                             </div>
                             <div class="col-md-4">
@@ -71,9 +82,12 @@
                             <div class="col-md-8">
                                 <div class="form-group">
                                     <label for="survey-detail">Condición</label>
-                                    <select class="form-control" ng-model="incentive.requirement">
-                                        <option ng-repeat="requirement in requirementTypes" value={{requirement.id}}>{{requirement.value}}</option>
-                                    </select>    
+
+                                    <select id="requirement-type" class="form-control" ng-model="incentive.requirement" ng-options="requirement.id as (requirement.value) for requirement in requirementTypes">
+                                        <option>- Condición -</option>
+                                    </select>  
+
+
                                 </div>         
                             </div>
                             <div class="col-md-4">
@@ -116,6 +130,9 @@
     </div>
 </div>
 
+<!--
+    Type Form
+-->
 
 <div class="modal fade" id="incentive-type-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -141,6 +158,9 @@
     </div>
 </div>
 
+<!--
+    Requirement Form
+-->
 
 <div class="modal fade" id="requirement-type-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -166,6 +186,9 @@
     </div>
 </div>
 
+<!--
+    Status Form
+-->
 
 <div class="modal fade" id="incentive-modal-status" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
