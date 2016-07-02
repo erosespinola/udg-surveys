@@ -10,18 +10,27 @@ app.controller("incentivesController", ["$scope", "$location", "authService", "a
 
         $scope.createIncentive = function () {
             incentivesFactory.create($scope.incentive);
-
         };
 
+        $scope.updateIncentive = function () {
+            incentiveFactory.update($scope.incentive);
+            angular.forEach($scope.incentives, function (incentive, i) {
+                if ($scope.incentive.id = incentive.id) {
+                    $scope.incentives[i] = $scope.incentive;
+                }
+            });
+        }
+
+        /* This load the data, to update in DB check updateIncentive */
         $scope.editIncentive = function (incentive) {
             incentive.startAt = new Date(incentive.startAt);
             incentive.endAt = new Date(incentive.endAt);
             $scope.incentive = incentive;
-            console.log($scope.incentive)
+            console.log($scope.incentive);
         }
 
-        $scope.updateStatus = function (incentiveId) {
-            incentiveFactory.update({ id: incentiveId, active: true})
+        $scope.clearIncentive = function () {
+            $scope.incentive = {};
         }
 
         $scope.deleteIncentive = function (incentiveId) {
@@ -38,6 +47,10 @@ app.controller("incentivesController", ["$scope", "$location", "authService", "a
             });
 
     	};
+
+        $scope.updateStatus = function (incentiveId) {
+            incentiveFactory.update({ id: incentiveId, active: true})
+        }
 
     	$scope.clearIncentiveType = function () {
     		$scope.incentiveType = {};
