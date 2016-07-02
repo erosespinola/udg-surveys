@@ -40,7 +40,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Nuevo incentivo</h4>
+                <h4 class="modal-title" id="myModalLabel">Incentivo</h4>
             </div>
             <div class="modal-body">
 
@@ -50,40 +50,54 @@
                             <label>Comentarios</label>
                             <input class="form-control" type="text" ng-model="incentive.name" />
                         </div>
-                        <div class="form-inline">
-                            <div class="form-group">
-                                <div>
+                           
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
                                     <label for="survey-name">Tipo</label>
-                                </div>
-                                <select class="form-control" id="incentive-type" ng-model="incentive.type">
-                                    <option ng-repeat="incentiveEntry in incentiveTypes" value={{incentiveEntry.id}}>{{incentiveEntry.value}}</option>
-                                </select>
-                                <button class="btn btn-default pull-right" ng-click="clearIncentiveType()" data-toggle="modal" data-target="#incentive-type-modal" data-backdrop="static"><span class="fa fa-plus"></span> Agregar tipo</button>
-                            </div>    
-                        </div>
-                        <div class="form-inline">
-                            <div class="form-group">
-                                <div>
-                                    <label for="survey-detail">Condición</label>
-                                </div>
-                                
-                                <select class="form-control" ng-model="incentive.requirement">
-                                    <option ng-repeat="requirement in requirementTypes" value={{requirement.id}}>{{requirement.value}}</option>
-                                </select>
-                                <button class="btn btn-default pull-right" ng-click="clearRequirementType()" data-toggle="modal" data-target="#requirement-type-modal" data-backdrop="static"><span class="fa fa-plus"></span> Agregar condición</button>
+                                    <select class="form-control" id="incentive-type" ng-model="incentive.type">
+                                        <option ng-repeat="incentiveEntry in incentiveTypes" value={{incentiveEntry.id}}>{{incentiveEntry.value}}</option>
+                                    </select>
+                                </div>   
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <button class="btn btn-default" ng-click="clearIncentiveType()" data-toggle="modal" data-target="#incentive-type-modal" data-backdrop="static" style="margin-top: 1.75em; width: 100%"><span class="fa fa-plus"></span> Agregar tipo</button>
+                                </div>   
                             </div>
                         </div>
-                        <div class="form-inline">
-                            <div class="form-group">
-                                <div>
-                                    <label for="survey-name">Fecha de vigencia</label>
-                                </div>
-                                <label>Inicio: </label>
-                                <input class="form-control" type="date" id="date-start" ng-model="incentive.startAt"> 
-                                <label>Fin:</label>
-                                <input class="form-control" type="date" id="date-end" ng-model="incentive.endAt">
-                            </div>    
+
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label for="survey-detail">Condición</label>
+                                    <select class="form-control" ng-model="incentive.requirement">
+                                        <option ng-repeat="requirement in requirementTypes" value={{requirement.id}}>{{requirement.value}}</option>
+                                    </select>    
+                                </div>         
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <button class="btn btn-default" ng-click="clearRequirementType()" data-toggle="modal" data-target="#requirement-type-modal" data-backdrop="static" style="margin-top: 1.75em; width: 100%"><span class="fa fa-plus"></span> Agregar condición</button>
+                                </div>         
+                            </div>
                         </div>
+                            
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Fecha de inicio</label>
+                                    <input class="form-control" type="date" id="date-start" ng-model="incentive.startAt"> 
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Fecha de fin</label>
+                                    <input class="form-control" type="date" id="date-end" ng-model="incentive.endAt">
+                                </div>
+                            </div>
+                        </div>
+                        
                         <div class="form-group">
                             <label>Comentarios</label>
                             <textarea class="form-control" type="text" ng-model="incentive.comments"></textarea>

@@ -5,6 +5,7 @@ app.controller("incentivesController", ["$scope", "$location", "authService", "a
 
         $scope.createIncentive = function () {
             incentivesFactory.create($scope.incentive);
+            
         };
 
         $scope.editIncentive = function () {
