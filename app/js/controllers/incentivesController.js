@@ -15,14 +15,18 @@ app.controller("incentivesController", ["$scope", "$location", "authService", "a
         $scope.updateIncentive = function () {
             incentiveFactory.update($scope.incentive);
             angular.forEach($scope.incentives, function (incentive, i) {
-                if ($scope.incentive.id = incentive.id) {
-                    $scope.incentives[i] = $scope.incentive;
+                if ($scope.incentive.id === incentive.id) {
+                    console.log("Object changed");
+                    $scope.incentives[i] = angular.copy($scope.incentive);
                 }
             });
         }
 
         /* This load the data, to update in DB check updateIncentive */
         $scope.editIncentive = function (incentive) {
+            // Copy to avoid changes in incentives list.
+            incentive = angular.copy(incentive);
+
             incentive.startAt = new Date(incentive.startAt);
             incentive.endAt = new Date(incentive.endAt);
             $scope.incentive = incentive;
@@ -34,8 +38,21 @@ app.controller("incentivesController", ["$scope", "$location", "authService", "a
         }
 
         $scope.deleteIncentive = function (incentiveId) {
-            incentiveFactory.delete({ id: incentiveId });
-            $scope.incentives = incentivesFactory.query();
+            swal({
+                title: "¿Deseas eliminar este incentivo?",
+                text: "",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Eliminar",
+                closeOnConfirm: false 
+                }, 
+                function() {
+                    incentiveFactory.delete({ id: incentiveId });
+                    $scope.incentives = incentivesFactory.query();
+            });
+
+            
         };
 
     	$scope.addIncentiveType = function () {

@@ -12,11 +12,23 @@ app.controller('surveysController', ['$window', '$scope', '$location', '$route',
 
         // callback for ng-click 'deleteSurvey':
         $scope.deleteSurvey = function (surveyId) {
-            surveyFactory.delete({ id: surveyId });
-            //$scope.surveys = surveysFactory.query();
-            setTimeout(function () {
-                $route.reload();    
-            }, 1000);
+            swal({
+                title: "¿Deseas eliminar esta encuesta?",
+                text: "La encuesta será eliminada junto con todas las preguntas que contiene.",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Eliminar",
+                closeOnConfirm: false 
+                }, 
+                function() {
+                    surveyFactory.delete({ id: surveyId });
+                    //$scope.surveys = surveysFactory.query();
+                    setTimeout(function () {
+                        $route.reload();    
+                    }, 1000);
+            });
+
         };
 
         // callback for ng-click 'createSurvey':
