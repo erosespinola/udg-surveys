@@ -41,7 +41,7 @@ app.config(function($routeProvider) {
 		}
 	}).
       when('/surveys/:id', {
-		templateUrl: 'templates/surveys/survey.html',
+		templateUrl: 'templates/surveys/create.html',
 		controller: 'surveyController',
 		resolve: {
 			auth: function($q, authService) {
@@ -50,7 +50,7 @@ app.config(function($routeProvider) {
 		}
 	}).
       when('/surveys/create/', {
-		templateUrl: 'templates/surveys/survey.html',
+		templateUrl: 'templates/surveys/create.html',
 		controller: 'surveyController',
 		resolve: {
 			auth: function($q, authService) {

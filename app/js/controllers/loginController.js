@@ -14,7 +14,12 @@ app.controller("loginController", ["$scope", "$location", "$window", "authServic
                     $scope.userInfo = result;
                     $location.path("/");
                 }, function (error) {
-                    $window.alert("Invalid credentials");
+                    swal({
+                        title: "Credenciales incorrectas",
+                        text: "Verifica que los datos sean correctos",
+                        type: "warning",
+                        closeOnConfirm: false 
+                    });
                     console.log(error);
                 });
         };
