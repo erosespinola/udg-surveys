@@ -54,7 +54,7 @@
                 <form>  
                     <div class="incentive-form">
                         <div class="form-group">
-                            <label>Comentarios</label>
+                            <label>Incentivo</label>
                             <input class="form-control" type="text" ng-model="incentive.name" />
                         </div>
                            
@@ -64,7 +64,7 @@
                                     <label for="survey-name">Tipo</label>
 
 
-                                    <select id="incentive-type" class="form-control" ng-model="incentive.type" ng-options="type.id as (type.value) for type in incentiveTypes">
+                                    <select id="incentive-type" class="form-control" ng-model="incentive.type" ng-options="type.id as (type.value) for type in incentiveTypes track by type.id">
                                         <option>- Incentivo -</option>
                                     </select>            
 
@@ -83,7 +83,7 @@
                                 <div class="form-group">
                                     <label for="survey-detail">Condición</label>
 
-                                    <select id="requirement-type" class="form-control" ng-model="incentive.requirement" ng-options="requirement.id as (requirement.value) for requirement in requirementTypes">
+                                    <select id="requirement-type" class="form-control" ng-model="incentive.requirement" ng-options="requirement.id as (requirement.value) for requirement in requirementTypes track by requirement.id ">
                                         <option>- Condición -</option>
                                     </select>  
 
@@ -124,8 +124,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" ng-hide="incentive.id" ng-click="createIncentive()">Guardar</button>
-                <button type="button" class="btn btn-primary" ng-show="incentive.id" ng-click="updateIncentive()">Actualizar</button>
+                <button type="button" class="btn btn-primary" ng-hide="incentive.id" ng-click="createIncentive()" data-dismiss="modal">Guardar</button>
+                <button type="button" class="btn btn-primary" ng-show="incentive.id" ng-click="updateIncentive()" data-dismiss="modal">Actualizar</button>
             </div>
         </div>
     </div>
@@ -153,7 +153,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" ng-click="addIncentiveType()">Guardar tipo</button>
+                <button type="button" class="btn btn-primary" ng-click="addIncentiveType()" data-dismiss="modal">Guardar tipo</button>
             </div>
         </div>
     </div>
@@ -181,7 +181,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" ng-click="addRequirementType()">Guardar condición</button>
+                <button type="button" class="btn btn-primary" ng-click="addRequirementType()" data-dismiss="modal">Guardar condición</button>
             </div>
         </div>
     </div>

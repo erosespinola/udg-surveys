@@ -6,7 +6,7 @@ app.config(function($routeProvider) {
 	var resolveLogin = function ($q, authService) {
 		var userInfo = authService.getUserInfo();
 		var currentDate = new Date();
-
+		console.log(userInfo);
 		if (userInfo) {
 			if (currentDate <= userInfo.expires_on) {
 				return $q.when(userInfo);	
@@ -33,7 +33,7 @@ app.config(function($routeProvider) {
 	}).
       when('/surveys/', {
 		templateUrl: 'templates/surveys.html',
-		controller: 'surveysController',
+		controller: 'surveyController',
 		resolve: {
 			auth: function($q, authService) {
 				return resolveLogin($q, authService);

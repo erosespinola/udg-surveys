@@ -1,6 +1,45 @@
-app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'surveysFactory', 'surveyFactory', 'questionsFactory', 'questionFactory', 'answersFactory', 'answerFactory', '$location',
-    function ($scope, $routeParams, authService, surveysFactory, surveyFactory, questionsFactory, questionFactory, answersFactory, answerFactory, $location) {
-        
+app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'surveysFactory', 'surveyFactory', 'questionsFactory', 'questionFactory', 'answersFactory', 'answerFactory', '$location', '$route',
+    function ($scope, $routeParams, authService, surveysFactory, surveyFactory, questionsFactory, questionFactory, answersFactory, answerFactory, $location, $route) {
+        $scope.getStatus = function (active) {
+            return (active) ? "Active" : "Inactive" ;
+        };
+
+        // callback for ng-click 'editSurvey':
+        $scope.editSurvey = function (surveyId) {
+            $location.path('/surveys/' + surveyId);
+        };
+
+        // callback for ng-click 'deleteSurvey':
+        $scope.deleteSurvey = function (surveyId) {
+            swal({
+                title: "¿Deseas eliminar esta encuesta?",
+                text: "La encuesta será eliminada junto con todas las preguntas que contiene.",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Eliminar",
+                closeOnConfirm: true 
+                }, 
+                function() {
+                    surveyFactory.delete({ id: surveyId }).$promise.then(function(params){
+                        $scope.surveys = surveysFactory.query();
+                    });
+                    //$route.reload();
+            });
+
+        };
+
+        // callback for ng-click 'createSurvey':
+        $scope.createSurvey = function() {
+            $location.path('/surveys/create');
+        };
+
+        $scope.surveys = surveysFactory.query();
+
+        /*
+            Everything related to the form begins here...  
+        */
+
         // Used to map type of question
         $scope.types = [
             { value: 0, label: "Texto corto" },
@@ -21,34 +60,71 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
             question: false,
             answer: false
         };
+        $scope.saving = false;
 
         /*
             SURVEY
         */
 
         // callback for ng-click 'createNewSurvey':
-        $scope.createNewSurvey = function () {
+        $scope.createNewSurvey = function() {
+            if ($scope.saving) {
+                return;
+            } 
+
+            var validator = $scope.validateSurvey();
+            if (validator !== {}) {
+
+                var message = $scope.getErrorMessage(validator);
+
+                swal({
+                    title: "Encuesta incompleta",
+                    text: message,
+                    type: "warning"
+                });
+
+                return;
+            }
+
+            $scope.saving = !$scope.saving;
+
             if ($scope.survey.name === undefined || $scope.survey.name === "") {
                 alert("La encuesta debe tener un nombre");
             } else {
                 $scope.survey.active = true;
-                surveysFactory.create($scope.survey);
-                //$location.path('/surveys/');
-                setTimeout(function () {
-                    //$location.path('/surveys');
-                    window.location.href = "#/surveys/";
-                }, 500);
+                surveysFactory.create($scope.survey).$promise.then(function(params){
+                    $location.path('/surveys/');
+                });
+                
             }
         }
 
         // callback for ng-click 'updateSurvey':
-        $scope.updateSurvey = function () {
+        $scope.updateSurvey = function() {
+            if ($scope.saving) {
+                return;
+            }
+
+            var validator = $scope.validateSurvey();
+            if (validator !== {}) {
+
+                var message = $scope.getErrorMessage(validator);
+
+                swal({
+                    title: "Encuesta incompleta",
+                    text: message,
+                    type: "warning"
+                });
+
+                return;
+            }
+
+            $scope.saving = !$scope.saving;
+
             var updateQuestions = [];
             var createQuestions = [];
             var updateAnswers = [];
             var createAnswers = [];
-
-            surveyFactory.update($scope.survey);
 
             angular.forEach($scope.survey.questions, function(question, i){
                 if (question.id) {
@@ -73,25 +149,25 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
                 console.log(question);
             });
             
-            questionFactory.update({questions: updateQuestions});
-            angular.forEach(createQuestions, function(question, i){
-                questionFactory.create(question);
-            });
+            surveyFactory.update($scope.survey).$promise.then(function(params) {
+                questionFactory.update({questions: updateQuestions}).$promise.then(function(params) {
+                    angular.forEach(createQuestions, function(question, i){
+                        questionFactory.create(question);
+                    });
 
-            answerFactory.update({answerOptions: updateAnswers});
-            angular.forEach(createAnswers, function(answer, i){
-                console.log("Creatating answer");
-                answerFactory.create(answer)
+                    answerFactory.update({answerOptions: updateAnswers}).$promise.then(function(params) {
+                        angular.forEach(createAnswers, function(answer, i){
+                            answerFactory.create(answer)
+                        });
+                    });
+                });
+            }).finally(function() {
+                $location.path('/surveys/');
             });
-
-            setTimeout(function () {
-                console.log("Redireccion");
-                window.location.href = "#/surveys/";
-            }, 500);
         };
 
         // callback for ng-click 'cancel':
-        $scope.cancel = function () {
+        $scope.cancel = function() {
             $location.path('/surveys');
         };
 
@@ -99,9 +175,19 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
             QUESTIONS
         */
 
-        $scope.saveQuestion = function () {
-            if (false) { //$scope.question.question === undefined || $scope.question.help === undefined || $scope.question.type === undefined) {
-                alert("Captura todos los datos.");
+        $scope.saveQuestion = function() {
+            var validator = $scope.validateQuestion();
+            if (validator !== {}) {
+
+                var message = $scope.getErrorMessage(validator);
+
+                swal({
+                    title: "Pregunta incompleta",
+                    text: message,
+                    type: "warning"
+                });
+
+                return;
             } else {
                 if ($scope.question.index !== undefined) { // Editing question
                     $scope.survey.questions[$scope.question.index] = $scope.question;
@@ -109,7 +195,8 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
                     $scope.survey.questions.push($scope.question);
                 }
             }
-            console.log($scope.survey);
+
+            $('#survey-modal-detail').modal('hide');
             $scope.clearQuestion();
         }
 
@@ -120,16 +207,27 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
         }
         
         $scope.deleteQuestion = function (i) {
-            if ($scope.survey.questions[i].id) {
-                // Delete from server
-                questionFactory.delete({ id: $scope.survey.questions[i].id });
-            }
-            $scope.survey.questions.splice(i, 1);
-            alert("Pregunta eliminada")
+            swal({
+                title: "¿Deseas eliminar esta pregunta?",
+                text: "",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Eliminar",
+                closeOnConfirm: true 
+            }, 
+                function() {
+                    console.log($scope.survey);
+                    if ($scope.survey.questions[i].id) {
+                        questionFactory.delete({ id: $scope.survey.questions[i].id });
+                    }
+                    $scope.survey.questions.splice(i, 1);
+                    $scope.$apply();
+            });
         }
 
         // Clean the scope when adding a new question
-        $scope.clearQuestion = function () {
+        $scope.clearQuestion = function() {
             $scope.question = {
                 answerOptions: []
             };
@@ -140,17 +238,31 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
             ANSWERS
         */
 
-        $scope.saveAnswer = function () {
-            if (false) { //$scope.answer.value === undefined) {
-                alert("Introduce una respuesta");
+        $scope.saveAnswer = function() {
+            var validator = $scope.validateAnswer();
+            console.log(validator);
+            console.log({});
+            if (validator !== {}) {
+                var message = $scope.getErrorMessage(validator);
+
+                swal({
+                    title: "Respuesta incompleta",
+                    text: message,
+                    type: "warning"
+                });
+
+                return;
             } else {
                 if ($scope.answer.index !== undefined) { // Editing answer
                     $scope.question.answerOptions[$scope.answer.index] = $scope.answer;
                 } else { // New answer
                     $scope.question.answerOptions.push($scope.answer);
                 }
+                $('#answer-modal').modal('hide');
+                $scope.clearAnswer();
             }
-            $scope.clearAnswer();
+
+            
         }
 
         $scope.loadAnswer = function (i) {
@@ -159,7 +271,7 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
             $scope.editingState.answer = true;
         }
 
-        $scope.loadMinMax = function () {
+        $scope.loadMinMax = function() {
             if ($scope.question.answerOptions[0]) {
                 $scope.answer = $scope.question.answerOptions[0];
             }
@@ -167,9 +279,60 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
 
 
         // Clean the scope when adding a new answer
-        $scope.clearAnswer = function () {
-            $scope.answer = {}
+        $scope.clearAnswer = function() {
+            $scope.answer = {};
             $scope.editingState.answer = false;
+        }
+
+        $scope.validateSurvey = function() {
+            var surveyValidator = {};
+            if ($scope.survey.name === undefined || $scope.survey.name === "") {
+                surveyValidator.name = "El nombre de la encuesta es obligatorio."
+            }
+            if ($scope.survey.questions.length === 0) {
+                surveyValidator.questions = "Se debe agregar al menos una pregunta."
+            }
+            return surveyValidator;
+        };
+
+        $scope.validateQuestion = function() {
+            var questionValidator = {};
+            if ($scope.question.question === undefined || $scope.question.question === "") {
+                questionValidator.question = "El texto de la pregunta es obligatorio.";
+            }
+            if ($scope.question.type === undefined || $scope.question.type === "" || $scope.question.type === "?") {
+                questionValidator.type = "El tipo de pregunta es obligatorio.";
+            }
+            if ([2,3].indexOf($scope.question.type) > -1 && $scope.question.answerOptions.length === 0) {
+                questionValidator.answerOptions = "Se debe agregar al menos una respuesta.";
+            }
+            if (true) { // Escala
+            }
+            return questionValidator;
+        };
+
+        $scope.validateAnswer = function() {
+            var answerValidator = {};
+            if ([2,3].indexOf($scope.question.type) > -1 && ($scope.answer.value === undefined || $scope.answer.value === "")) {
+                answerValidator.value = "El texto de la respuesta es obligatorio.";
+            }
+            /*if ($scope.question.type === 4) {
+                if ($scope.answer.min < $scope.answer.max) {
+                    answerValidator.range = "Valores incorrectos.";
+                }
+            }*/
+            
+            return answerValidator;
+        };
+
+        $scope.getErrorMessage = function(validator) {
+            var errorText = "";
+            for (var key in validator) {
+                if (validator.hasOwnProperty(key)) {
+                    errorText += validator[key] + '\n';
+                }
+            }
+            return errorText;
         }
 
         // Loading complete survey object...
@@ -183,6 +346,5 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
                     $scope.survey.questions[i].answerOptions = answersFactory.query({id: question.id}); 
                 });
             });
-        });        
-        
+        }); 
     }]);

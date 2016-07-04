@@ -10,6 +10,7 @@ app.controller("incentivesController", ["$scope", "$location", "authService", "a
 
         $scope.createIncentive = function () {
             incentivesFactory.create($scope.incentive);
+            $scope.incentives.push($scope.incentive);
         };
 
         $scope.updateIncentive = function () {
@@ -45,11 +46,12 @@ app.controller("incentivesController", ["$scope", "$location", "authService", "a
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
                 confirmButtonText: "Eliminar",
-                closeOnConfirm: false 
+                closeOnConfirm: true 
                 }, 
                 function() {
-                    incentiveFactory.delete({ id: incentiveId });
-                    $scope.incentives = incentivesFactory.query();
+                    incentiveFactory.delete({ id: incentiveId }).$promise.then(function(params){
+                        $scope.incentives = incentivesFactory.query();
+                    });
             });
 
             
@@ -89,4 +91,6 @@ app.controller("incentivesController", ["$scope", "$location", "authService", "a
         $scope.incentives = incentivesFactory.query();
     	$scope.incentiveTypes = incentiveTypesFactory.query();
         $scope.requirementTypes = requirementTypesFactory.query();
+
+        console.log($scope.incentiveTypes);
 	}]);
