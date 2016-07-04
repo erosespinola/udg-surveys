@@ -72,7 +72,7 @@ app.controller("incentivesController", ["$scope", "$location", "authService", "a
         /* This load the data, to update in DB check updateIncentive */
         $scope.editIncentive = function (incentive) {
             // Copy to avoid changes in incentives list.
-            incentive = angular.copy(incentive);
+            //incentive = angular.copy(incentive);
 
             incentive.startAt = new Date(incentive.startAt);
             incentive.endAt = new Date(incentive.endAt);
@@ -133,6 +133,38 @@ app.controller("incentivesController", ["$scope", "$location", "authService", "a
         $scope.clearRequirementType = function () {
             $scope.requirementType = {};
         };
+
+        $scope.getIncentiveType = function (incentiveId) {
+            var typeValue = "";
+            angular.forEach($scope.incentives, function(incentive, i) {
+                if (incentive.id === incentiveId) {
+                    angular.forEach($scope.incentiveTypes, function(type, i) {
+                        if (incentive.type === type.id) {
+                            typeValue = type.value
+                        }
+                    });
+                }
+            })
+            return typeValue;
+        }
+
+        $scope.getIncentiveRequirement = function (incentiveId) {
+            var requirementValue = "";
+            angular.forEach($scope.incentives, function(incentive, i) {
+                if (incentive.id === incentiveId) {
+                    angular.forEach($scope.requirementTypes, function(requirement, i) {
+                        if (incentive.requirement === requirement.id) {
+                            requirementValue = requirement.value
+                        }
+                    });
+                }
+            })
+            return requirementValue;
+        }
+
+        $scope.getRequirementType = function (requirementId) {
+
+        }
 
         $scope.validateIncentive = function() {
             var incentiveValidator = {};

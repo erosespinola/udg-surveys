@@ -13,13 +13,16 @@
             <table class="table table-hover">
                 <tr>
                     <th>Incentivo</th>
-                    <th>Fecha de creación</th>
+                    <th>Tipo</th>
+                    <th>Condición</th>
                     <th>Estatus</th>
                     <th>Acciones</th>
                 </tr>
                 <tr ng-repeat="incentive in incentives">
                     <td>{{incentive.name}}</td>
-                    <td>{{incentive.created_at | date:'dd/MM/yyyy @ h:mma' }}</td>
+                    <!--<td>{{incentive.created_at | date:'dd/MM/yyyy @ h:mma' }}</td>-->
+                    <td>{{ getIncentiveType(incentive.id) }}</td>
+                    <td>{{ getIncentiveRequirement(incentive.id) }}</td>
                     <td>
                         <span style="cursor: pointer">
                             <span ng-show="incentive.active">
@@ -77,16 +80,14 @@
 
 
                                     <select id="incentive-type" class="form-control" ng-model="incentive.type" ng-options="type.id as (type.value) for type in incentiveTypes track by type.id">
-                                        <option>- Incentivo -</option>
-                                    </select>            
+                                    </select>
 
-
-                                </div>   
+                                </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <button class="btn btn-default" ng-click="clearIncentiveType()" data-toggle="modal" data-target="#incentive-type-modal" data-backdrop="static" style="margin-top: 1.75em; width: 100%"><span class="fa fa-plus"></span> Agregar tipo</button>
-                                </div>   
+                                </div>
                             </div>
                         </div>
 
@@ -95,12 +96,10 @@
                                 <div class="form-group">
                                     <label for="survey-detail">Condición</label>
 
-                                    <select id="requirement-type" class="form-control" ng-model="incentive.requirement" ng-options="requirement.id as (requirement.value) for requirement in requirementTypes track by requirement.id ">
-                                        <option>- Condición -</option>
-                                    </select>  
+                                    <select id="requirement-type" class="form-control" ng-model="incentive.requirement" ng-options="requirement.id as (requirement.value) for requirement in requirementTypes track by requirement.id">
+                                    </select>
 
-
-                                </div>         
+                                </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -113,7 +112,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Fecha de inicio</label>
-                                    <input class="form-control" type="date" id="date-start" ng-model="incentive.startAt"> 
+                                    <input class="form-control" type="date" id="date-start" ng-model="incentive.startAt">
                                 </div>
                             </div>
                             <div class="col-md-6">
