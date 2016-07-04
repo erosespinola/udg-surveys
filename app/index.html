@@ -3,15 +3,19 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport"   content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
     <title>Encuestas UdeG</title>
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-switch.min.css">
     <link rel="stylesheet" href="css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
-
+    
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+    
     <link rel="stylesheet" href="css/style.css">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -29,7 +33,7 @@
                         <img alt="Brand" src="img/logo.png">
                     </a>
                 </div>
-                <ul class="nav navbar-nav navbar-right">
+                <ul class="nav navbar-nav navbar-right" ng-show="showMenu()" ng-controller="generalController">
                     <li><a href="#/" target="_self">Inicio/Estadíasticas</a></li>
                     <li><a href="#/surveys" target="_self">Encuestas</a></li>
                     <li><a href="#/incentives" target="_self">Incentivos</a></li>
@@ -37,11 +41,11 @@
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administración <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="#/users" target="_self">Usuarios</a></li>
-                            <li><a href="" data-toggle="modal" data-target="#system-status-modal">Modo mantenimiento</a></li>
-                            <li><a href="" data-toggle="modal" data-target="#contact-modal">Datos de contacto</a></li>
+                            <li><a href="" ng-click="loadStatus()" data-toggle="modal" data-target="#system-status-modal">Modo mantenimiento</a></li>
+                            <li><a href="" ng-click="loadContacto()" data-toggle="modal" data-target="#contact-modal">Datos de contacto</a></li>
                         </ul>
                     </li>
-                    <li><a href="#/logout" target="_self">Cerrar sesión</a></li>
+                    <li><a href="" ng-click="logout()" target="_self">Cerrar sesión</a></li>
                 </ul>
             </div>
         </nav>
@@ -123,6 +127,7 @@
 
     <script src="js/app.js"></script>
 
+    <script src="js/controllers/generalController.js"></script>
     <script src="js/controllers/loginController.js"></script>
     <script src="js/controllers/surveysController.js"></script>
     <script src="js/controllers/surveyController.js"></script>

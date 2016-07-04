@@ -10,6 +10,7 @@ app.controller("incentivesController", ["$scope", "$location", "authService", "a
 
         $scope.createIncentive = function () {
             incentivesFactory.create($scope.incentive);
+            $scope.incentives.push($scope.incentive);
         };
 
         $scope.updateIncentive = function () {
@@ -89,4 +90,6 @@ app.controller("incentivesController", ["$scope", "$location", "authService", "a
         $scope.incentives = incentivesFactory.query();
     	$scope.incentiveTypes = incentiveTypesFactory.query();
         $scope.requirementTypes = requirementTypesFactory.query();
+
+        console.log($scope.incentiveTypes);
 	}]);
