@@ -91,7 +91,7 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
             if ($scope.survey.name === undefined || $scope.survey.name === "") {
                 alert("La encuesta debe tener un nombre");
             } else {
-                $scope.survey.active = true;
+                $scope.survey.active = false;
                 surveysFactory.create($scope.survey).$promise.then(function(params){
                     $location.path('/surveys/');
                 });
@@ -326,7 +326,8 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
             if ([2,3].indexOf($scope.question.type) > -1 && $scope.question.answerOptions.length === 0) {
                 questionValidator.answerOptions = "Se debe agregar al menos una respuesta.";
             }
-            if (true) { // Escala
+            if ($scope.question.type === 4 && $scope.question.answerOptions.length === 0) { // Escala
+                questionValidator.answerOptionsScale = "Se debe definir una escala."
             }
             return questionValidator;
         };
@@ -336,12 +337,11 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
             if ([2,3].indexOf($scope.question.type) > -1 && ($scope.answer.value === undefined || $scope.answer.value === "")) {
                 answerValidator.value = "El texto de la respuesta es obligatorio.";
             }
-            /*if ($scope.question.type === 4) {
-                if ($scope.answer.min < $scope.answer.max) {
-                    answerValidator.range = "Valores incorrectos.";
+            if ($scope.question.type === 4) {
+                if (parseInt($scope.answer.min) >= parseInt($scope.answer.max)) {
+                    answerValidator.range = "Valores de escala incorrectos.";
                 }
-            }*/
-            
+            }
             return answerValidator;
         };
 

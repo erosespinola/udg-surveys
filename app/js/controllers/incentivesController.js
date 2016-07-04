@@ -9,11 +9,39 @@ app.controller("incentivesController", ["$scope", "$location", "authService", "a
         };
 
         $scope.createIncentive = function () {
+            var validator = $scope.validateIncentive();
+            if (!(Object.keys(validator).length === 0 && validator.constructor === Object)) {
+
+                var message = $scope.getErrorMessage(validator);
+
+                swal({
+                    title: "Incentivo incompleto",
+                    text: message,
+                    type: "warning"
+                });
+
+                return;
+            }
             incentivesFactory.create($scope.incentive);
             $scope.incentives.push($scope.incentive);
+            $('#incentive-modal-detail').modal('hide');
         };
 
         $scope.updateIncentive = function () {
+            var validator = $scope.validateIncentive();
+            if (!(Object.keys(validator).length === 0 && validator.constructor === Object)) {
+
+                var message = $scope.getErrorMessage(validator);
+
+                swal({
+                    title: "Incentivo incompleto",
+                    text: message,
+                    type: "warning"
+                });
+
+                return;
+            }
+
             incentiveFactory.update($scope.incentive);
             angular.forEach($scope.incentives, function (incentive, i) {
                 if ($scope.incentive.id === incentive.id) {
@@ -21,6 +49,26 @@ app.controller("incentivesController", ["$scope", "$location", "authService", "a
                     $scope.incentives[i] = angular.copy($scope.incentive);
                 }
             });
+            $('#incentive-modal-detail').modal('hide');
+        }
+
+        $scope.sendStatusRequest = function(id, incentive) {
+            incentiveFactory.update({id: id, active: incentive.active}).$promise.then(function(params) {
+                console.log(params);
+            });
+        };
+
+        $scope.updateStatus = function(incentiveId) {
+            angular.forEach($scope.incentives, function(incentive, i) {
+                if (incentive.id === incentiveId) {
+                    incentive.active = true;
+                } else {
+                    incentive.active = false;
+                }
+                $scope.sendStatusRequest(incentive.id, incentive);
+            });
+
+            swal("Incentivo activo", "Se ha actualizado el incentivo como activo", "success")
         }
 
         /* This load the data, to update in DB check updateIncentive */
@@ -67,9 +115,9 @@ app.controller("incentivesController", ["$scope", "$location", "authService", "a
 
     	};
 
-        $scope.updateStatus = function (incentiveId) {
+        /*$scope.updateStatus = function (incentiveId) {
             incentiveFactory.update({ id: incentiveId, active: true})
-        }
+        }*/
 
     	$scope.clearIncentiveType = function () {
     		$scope.incentiveType = {};
@@ -87,6 +135,40 @@ app.controller("incentivesController", ["$scope", "$location", "authService", "a
         $scope.clearRequirementType = function () {
             $scope.requirementType = {};
         };
+
+        $scope.validateIncentive = function() {
+            var incentiveValidator = {};
+            if ($scope.incentive.name === undefined || $scope.incentive.name === "") {
+                incentiveValidator.question = "El nombre del incentivo es obligatorio.";
+            }
+            if ($scope.incentive.type === undefined || $scope.incentive.type === "" || $scope.incentive.type === "?") {
+                incentiveValidator.type = "El tipo de incentivo es obligatorio.";
+            }
+            if ($scope.incentive.requirement === undefined || $scope.incentive.requirement === "" || $scope.incentive.requirement === "?") {
+                incentiveValidator.requirement = "La condición es obligatoria.";
+            }
+            if ($scope.incentive.startAt === undefined || $scope.incentive.startAt === "" || $scope.incentive.startAt === "?") {
+                incentiveValidator.startAt = "El inicio del incentivo es obligatorio.";
+            }
+            if ($scope.incentive.endAt === undefined || $scope.incentive.endAt === "" || $scope.incentive.endAt === "?") {
+                incentiveValidator.endAt = "El inicio del incentivo es obligatorio.";
+            }
+            if (new Date($scope.incentive.startAt) > new Date($scope.incentive.endAt)) { // Fecha mayor y menor
+                incentiveValidator.dates = "Las fechas de inicio y fin son incorrectas";
+            }
+
+            return incentiveValidator;
+        };
+
+        $scope.getErrorMessage = function(validator) {
+            var errorText = "";
+            for (var key in validator) {
+                if (validator.hasOwnProperty(key)) {
+                    errorText += validator[key] + '\n';
+                }
+            }
+            return errorText;
+        }
 
         $scope.incentives = incentivesFactory.query();
     	$scope.incentiveTypes = incentiveTypesFactory.query();

@@ -20,7 +20,18 @@
                 <tr ng-repeat="incentive in incentives">
                     <td>{{incentive.name}}</td>
                     <td>{{incentive.created_at | date:'dd/MM/yyyy @ h:mma' }}</td>
-                    <td>{{getStatus(incentive.active)}}</td>
+                    <td>
+                        <span style="cursor: pointer">
+                            <span ng-show="incentive.active">
+                                <span class="fa fa-check-square-o fa-1-5x" ng-click="updateStatus(incentive.id)" data-toggle="tooltip" data-placement="top" title="Cambiar estatus"></span>
+                            </span>
+                            <span ng-hide="incentive.active">
+                                <span class="fa fa-square-o fa-1-5x" ng-click="updateStatus(incentive.id)" data-toggle="tooltip" data-placement="top" title="Cambiar estatus"></span>
+                            </span>
+                        </span>
+                        <span style="display: inline-block; width: 50px">{{ getStatus(incentive.active) }}</span>
+
+                    </td>
                     <td>
                         <div class="actions-container">
                             <span data-toggle="modal" data-target="#incentive-modal-detail" data-backdrop="static">
@@ -30,7 +41,7 @@
                             <!--<span data-toggle="modal" data-target="#incentive-modal-status" data-backdrop="static">
                                 <span class="fa fa-toggle-on fa-1-5x" ng-click="updateStatus(incentive.id)" data-toggle="tooltip" data-placement="top" title="Cambiar estatus"></span>
                             </span>-->
-                            
+
                             <span class="fa fa-trash fa-1-5x" ng-click="deleteIncentive(incentive.id)" data-toggle="tooltip" data-placement="top" title="Eliminar"></span>
                         </div>
                     </td>
@@ -125,8 +136,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" ng-hide="incentive.id" ng-click="createIncentive()" data-dismiss="modal">Guardar</button>
-                <button type="button" class="btn btn-primary" ng-show="incentive.id" ng-click="updateIncentive()" data-dismiss="modal">Actualizar</button>
+                <button type="button" class="btn btn-primary" ng-hide="incentive.id" ng-click="createIncentive()">Guardar</button>
+                <button type="button" class="btn btn-primary" ng-show="incentive.id" ng-click="updateIncentive()">Actualizar</button>
             </div>
         </div>
     </div>
