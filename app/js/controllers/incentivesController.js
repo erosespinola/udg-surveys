@@ -61,14 +61,12 @@ app.controller("incentivesController", ["$scope", "$location", "authService", "a
         $scope.updateStatus = function(incentiveId) {
             angular.forEach($scope.incentives, function(incentive, i) {
                 if (incentive.id === incentiveId) {
-                    incentive.active = true;
-                } else {
-                    incentive.active = false;
-                }
-                $scope.sendStatusRequest(incentive.id, incentive);
-            });
+                    incentive.active = !incentive.active;
+                    $scope.sendStatusRequest(incentive.id, incentive);
 
-            swal("Incentivo activo", "Se ha actualizado el incentivo como activo", "success")
+                    swal("Incentivo activo", "Se ha actualizado el incentivo como activo", "success")
+                }
+            });
         }
 
         /* This load the data, to update in DB check updateIncentive */
