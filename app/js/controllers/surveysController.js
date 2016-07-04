@@ -25,7 +25,7 @@ app.controller('surveysController', ['$window', '$scope', '$location', '$route',
                     surveyFactory.delete({ id: surveyId });
                     //$scope.surveys = surveysFactory.query();
                     setTimeout(function () {
-                        $route.reload();    
+                        $route.reload();
                     }, 1000);
             });
 
