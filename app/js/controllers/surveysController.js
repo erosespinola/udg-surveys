@@ -1,6 +1,5 @@
 app.controller('surveysController', ['$window', '$scope', '$location', '$route', 'authService', 'surveysFactory', 'surveyFactory', 
     function ($window, $scope, $location, $route, authService, surveysFactory, surveyFactory) {
-        //$scope.userInfo = auth;
         $scope.getStatus = function (active) {
             return (active) ? "Active" : "Inactive" ;
         };

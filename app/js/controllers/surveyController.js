@@ -1,6 +1,45 @@
-app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'surveysFactory', 'surveyFactory', 'questionsFactory', 'questionFactory', 'answersFactory', 'answerFactory', '$location',
-    function ($scope, $routeParams, authService, surveysFactory, surveyFactory, questionsFactory, questionFactory, answersFactory, answerFactory, $location) {
-        
+app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'surveysFactory', 'surveyFactory', 'questionsFactory', 'questionFactory', 'answersFactory', 'answerFactory', '$location', '$route',
+    function ($scope, $routeParams, authService, surveysFactory, surveyFactory, questionsFactory, questionFactory, answersFactory, answerFactory, $location, $route) {
+        $scope.getStatus = function (active) {
+            return (active) ? "Active" : "Inactive" ;
+        };
+
+        // callback for ng-click 'editSurvey':
+        $scope.editSurvey = function (surveyId) {
+            $location.path('/surveys/' + surveyId);
+        };
+
+        // callback for ng-click 'deleteSurvey':
+        $scope.deleteSurvey = function (surveyId) {
+            swal({
+                title: "¿Deseas eliminar esta encuesta?",
+                text: "La encuesta será eliminada junto con todas las preguntas que contiene.",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Eliminar",
+                closeOnConfirm: true 
+                }, 
+                function() {
+                    surveyFactory.delete({ id: surveyId }).$promise.then(function(params){
+                        $scope.surveys = surveysFactory.query();
+                    });
+                    //$route.reload();
+            });
+
+        };
+
+        // callback for ng-click 'createSurvey':
+        $scope.createSurvey = function () {
+            $location.path('/surveys/create');
+        };
+
+        $scope.surveys = surveysFactory.query();
+
+        /*
+            Everything related to the form begins here...  
+        */
+
         // Used to map type of question
         $scope.types = [
             { value: 0, label: "Texto corto" },
@@ -21,6 +60,7 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
             question: false,
             answer: false
         };
+        $scope.saving = false;
 
         /*
             SURVEY
@@ -28,27 +68,33 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
 
         // callback for ng-click 'createNewSurvey':
         $scope.createNewSurvey = function () {
+            if ($scope.saving) {
+                return;
+            } 
+            $scope.saving = !$scope.saving;
+
             if ($scope.survey.name === undefined || $scope.survey.name === "") {
                 alert("La encuesta debe tener un nombre");
             } else {
                 $scope.survey.active = true;
-                surveysFactory.create($scope.survey);
-                //$location.path('/surveys/');
-                setTimeout(function () {
-                    //$location.path('/surveys');
-                    window.location.href = "#/surveys/";
-                }, 500);
+                surveysFactory.create($scope.survey).$promise.then(function(params){
+                    $location.path('/surveys/');
+                });
+                
             }
         }
 
         // callback for ng-click 'updateSurvey':
         $scope.updateSurvey = function () {
+            if ($scope.saving) {
+                return;
+            }
+            $scope.saving = !$scope.saving;
+
             var updateQuestions = [];
             var createQuestions = [];
             var updateAnswers = [];
             var createAnswers = [];
-
-            surveyFactory.update($scope.survey);
 
             angular.forEach($scope.survey.questions, function(question, i){
                 if (question.id) {
@@ -73,21 +119,21 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
                 console.log(question);
             });
             
-            questionFactory.update({questions: updateQuestions});
-            angular.forEach(createQuestions, function(question, i){
-                questionFactory.create(question);
-            });
+            surveyFactory.update($scope.survey).$promise.then(function(params) {
+                questionFactory.update({questions: updateQuestions}).$promise.then(function(params) {
+                    angular.forEach(createQuestions, function(question, i){
+                        questionFactory.create(question);
+                    });
 
-            answerFactory.update({answerOptions: updateAnswers});
-            angular.forEach(createAnswers, function(answer, i){
-                console.log("Creatating answer");
-                answerFactory.create(answer)
+                    answerFactory.update({answerOptions: updateAnswers}).$promise.then(function(params) {
+                        angular.forEach(createAnswers, function(answer, i){
+                            answerFactory.create(answer)
+                        });
+                    });
+                });
+            }).finally(function() {
+                $location.path('/surveys/');
             });
-
-            setTimeout(function () {
-                console.log("Redireccion");
-                window.location.href = "#/surveys/";
-            }, 500);
         };
 
         // callback for ng-click 'cancel':
@@ -183,6 +229,18 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
             $scope.editingState.answer = false;
         }
 
+        $scope.validateSurvey = function () {
+            
+        };
+
+        $scope.valideteQuestion = function () {
+
+        };
+
+        $scope.validateAnswer = function () {
+
+        };
+
         // Loading complete survey object...
         $scope.survey = surveyFactory.show({id: $routeParams.id});
         $scope.survey.$promise.then(function(response){
@@ -194,6 +252,5 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
                     $scope.survey.questions[i].answerOptions = answersFactory.query({id: question.id}); 
                 });
             });
-        });        
-        
+        }); 
     }]);

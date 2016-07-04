@@ -33,7 +33,7 @@ app.config(function($routeProvider) {
 	}).
       when('/surveys/', {
 		templateUrl: 'templates/surveys.html',
-		controller: 'surveysController',
+		controller: 'surveyController',
 		resolve: {
 			auth: function($q, authService) {
 				return resolveLogin($q, authService);
