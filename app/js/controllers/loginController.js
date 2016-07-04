@@ -17,8 +17,7 @@ app.controller("loginController", ["$scope", "$location", "$window", "authServic
                     swal({
                         title: "Credenciales incorrectas",
                         text: "Verifica que los datos sean correctos",
-                        type: "warning",
-                        closeOnConfirm: false 
+                        type: "warning"
                     });
                     console.log(error);
                 });
