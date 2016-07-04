@@ -25,7 +25,7 @@ exports.create = function(req, res) {
 		lastName: req.body.lastName,
 		user: req.body.user,
 		password: req.body.password,
-		role: req.params.role
+		role: req.body.role
 	}).then(function(user) {
 		return res.status(200).json(user);
 	}).catch(function(err) {
@@ -41,6 +41,7 @@ exports.update = function(req, res) {
 		var lastName = req.body.lastName == null ? user.get('lastName') : req.body.lastName;
 		var password = req.body.password == null ? user.get('password') : req.body.password;
 		var role = req.body.role == null ? user.get('role') : req.body.role;
+
 		user.update({
 			user: username,
 			firstName: firstName,

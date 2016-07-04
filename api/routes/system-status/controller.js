@@ -14,7 +14,7 @@ exports.update = function(req, res) {
 	SystemStatus.findAll().then(function(systemStatus) {
         var status = systemStatus[0];
 		var value = req.body.value == null ? status.get('value') : req.body.value;
-
+		console.log(req.body.value);
 		status.update({
 			value: value
 		}).then(function(status) {
