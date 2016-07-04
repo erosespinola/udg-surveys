@@ -106,7 +106,7 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
             }
 
             var validator = $scope.validateSurvey();
-            if (validator !== {}) {
+            if (!(Object.keys(validator).length === 0 && validator.constructor === Object)) {
 
                 var message = $scope.getErrorMessage(validator);
 
@@ -146,7 +146,6 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
                     });
                     
                 }
-                console.log(question);
             });
             
             surveyFactory.update($scope.survey).$promise.then(function(params) {
@@ -166,6 +165,25 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
             });
         };
 
+        $scope.sendStatusRequest = function(id, survey) {
+            surveyFactory.update({id: id, active: survey.active}).$promise.then(function(params) {
+                console.log(params);
+            });
+        };
+
+        $scope.updateStatus = function(surveyId) {
+            angular.forEach($scope.surveys, function(survey, i) {
+                if (survey.id === surveyId) {
+                    survey.active = true;
+                } else {
+                    survey.active = false;
+                }
+                $scope.sendStatusRequest(survey.id, survey);
+            });
+
+            swal("Encuesta activa", "Se ha actualizado la encuesta como activa", "success")
+        }
+
         // callback for ng-click 'cancel':
         $scope.cancel = function() {
             $location.path('/surveys');
@@ -177,7 +195,7 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
 
         $scope.saveQuestion = function() {
             var validator = $scope.validateQuestion();
-            if (validator !== {}) {
+            if (!(Object.keys(validator).length === 0 && validator.constructor === Object)) {
 
                 var message = $scope.getErrorMessage(validator);
 
@@ -242,7 +260,9 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
             var validator = $scope.validateAnswer();
             console.log(validator);
             console.log({});
-            if (validator !== {}) {
+
+            console.log(validator != {});
+            if (!(Object.keys(validator).length === 0 && validator.constructor === Object)) {
                 var message = $scope.getErrorMessage(validator);
 
                 swal({
