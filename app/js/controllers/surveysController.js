@@ -19,7 +19,7 @@ app.controller('surveysController', ['$window', '$scope', '$location', '$route',
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
                 confirmButtonText: "Eliminar",
-                closeOnConfirm: false 
+                closeOnConfirm: true 
                 }, 
                 function() {
                     surveyFactory.delete({ id: surveyId });

@@ -46,11 +46,12 @@ app.controller("incentivesController", ["$scope", "$location", "authService", "a
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
                 confirmButtonText: "Eliminar",
-                closeOnConfirm: false 
+                closeOnConfirm: true 
                 }, 
                 function() {
-                    incentiveFactory.delete({ id: incentiveId });
-                    $scope.incentives = incentivesFactory.query();
+                    incentiveFactory.delete({ id: incentiveId }).$promise.then(function(params){
+                        $scope.incentives = incentivesFactory.query();
+                    });
             });
 
             

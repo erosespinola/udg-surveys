@@ -120,12 +120,23 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
         }
         
         $scope.deleteQuestion = function (i) {
-            if ($scope.survey.questions[i].id) {
-                // Delete from server
-                questionFactory.delete({ id: $scope.survey.questions[i].id });
-            }
-            $scope.survey.questions.splice(i, 1);
-            alert("Pregunta eliminada")
+            swal({
+                title: "¿Deseas eliminar esta pregunta?",
+                text: "",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Eliminar",
+                closeOnConfirm: true 
+            }, 
+                function() {
+                    console.log($scope.survey);
+                    if ($scope.survey.questions[i].id) {
+                        questionFactory.delete({ id: $scope.survey.questions[i].id });
+                    }
+                    $scope.survey.questions.splice(i, 1);
+                    $scope.$apply();
+            });
         }
 
         // Clean the scope when adding a new question
