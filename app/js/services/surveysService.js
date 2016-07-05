@@ -2,7 +2,7 @@
     SURVEYS
 */
 app.factory('surveysFactory', function ($resource, $window) {
-    return $resource( $window.baseUrl + 'api/' + localStorage.token + '/surveys', {}, {
+    return $resource( $window.baseUrl + 'api/' + localStorage.token + '/surveys/', {}, {
         query: { method: 'GET', isArray: true },
         create: { method: 'POST' }
     })

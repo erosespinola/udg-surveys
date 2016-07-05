@@ -26,7 +26,6 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
                     });
                     //$route.reload();
             });
-
         };
 
         // callback for ng-click 'createSurvey':
@@ -34,7 +33,13 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
             $location.path('/surveys/create');
         };
 
-        $scope.surveys = surveysFactory.query();
+        surveysFactory.query().$promise.then(function(surveys) {
+            $scope.surveys = surveys;
+        });
+        
+
+
+
 
         /*
             Everything related to the form begins here...  
@@ -60,6 +65,7 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
             question: false,
             answer: false
         };
+
         $scope.saving = false;
 
         /*
@@ -73,7 +79,7 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
             } 
 
             var validator = $scope.validateSurvey();
-            if (validator !== {}) {
+            if (!(Object.keys(validator).length === 0 && validator.constructor === Object)) {
 
                 var message = $scope.getErrorMessage(validator);
 
@@ -356,15 +362,18 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
         }
 
         // Loading complete survey object...
-        $scope.survey = surveyFactory.show({id: $routeParams.id});
-        $scope.survey.$promise.then(function(response){
+        if ($routeParams.id) {
+            $scope.survey = surveyFactory.show({id: $routeParams.id});
+            $scope.survey.$promise.then(function(response){
 
-            $scope.survey.questions = questionsFactory.query({id: $routeParams.id});
-            $scope.survey.questions.$promise.then(function(questionsResponse){
+                $scope.survey.questions = questionsFactory.query({id: $routeParams.id});
+                $scope.survey.questions.$promise.then(function(questionsResponse){
 
-                angular.forEach($scope.survey.questions, function(question, i){
-                    $scope.survey.questions[i].answerOptions = answersFactory.query({id: question.id}); 
+                    angular.forEach($scope.survey.questions, function(question, i){
+                        $scope.survey.questions[i].answerOptions = answersFactory.query({id: question.id});
+                    });
                 });
-            });
-        }); 
+            });    
+        }
+        
     }]);

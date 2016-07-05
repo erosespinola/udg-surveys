@@ -21,8 +21,8 @@
                 <tr ng-repeat="incentive in incentives">
                     <td>{{incentive.name}}</td>
                     <!--<td>{{incentive.created_at | date:'dd/MM/yyyy @ h:mma' }}</td>-->
-                    <td>{{ getIncentiveType(incentive.id) }}</td>
-                    <td>{{ getIncentiveRequirement(incentive.id) }}</td>
+                    <td>{{ getIncentiveType(incentive.type) }}</td>
+                    <td>{{ getIncentiveRequirement(incentive.requirement) }}</td>
                     <td>
                         <span style="cursor: pointer">
                             <span ng-show="incentive.active">
@@ -79,7 +79,7 @@
                                     <label for="survey-name">Tipo</label>
 
 
-                                    <select id="incentive-type" class="form-control" ng-model="incentive.type" ng-options="type.id as (type.value) for type in incentiveTypes track by type.id">
+                                    <select id="incentive-type" class="form-control" ng-model="incentive.type" ng-options="type as (getIncentiveType(type)) for type in incentiveTypeIds track by type">
                                     </select>
 
                                 </div>
@@ -96,7 +96,7 @@
                                 <div class="form-group">
                                     <label for="survey-detail">Condición</label>
 
-                                    <select id="requirement-type" class="form-control" ng-model="incentive.requirement" ng-options="requirement.id as (requirement.value) for requirement in requirementTypes track by requirement.id">
+                                    <select id="requirement-type" class="form-control" ng-model="incentive.requirement" ng-options="requirement as (getIncentiveRequirement(requirement)) for requirement in incentiveRequirementIds track by requirement">
                                     </select>
 
                                 </div>

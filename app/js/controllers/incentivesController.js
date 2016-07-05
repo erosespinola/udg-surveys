@@ -22,8 +22,11 @@ app.controller("incentivesController", ["$scope", "$location", "authService", "a
 
                 return;
             }
-            incentivesFactory.create($scope.incentive);
-            $scope.incentives.push($scope.incentive);
+
+            incentivesFactory.create($scope.incentive).$promise.then(function(incentive) {
+                $scope.incentives.push(incentive);    
+            });
+            
             $('#incentive-modal-detail').modal('hide');
         };
 
@@ -45,7 +48,6 @@ app.controller("incentivesController", ["$scope", "$location", "authService", "a
             incentiveFactory.update($scope.incentive);
             angular.forEach($scope.incentives, function (incentive, i) {
                 if ($scope.incentive.id === incentive.id) {
-                    console.log("Object changed");
                     $scope.incentives[i] = angular.copy($scope.incentive);
                 }
             });
@@ -54,7 +56,6 @@ app.controller("incentivesController", ["$scope", "$location", "authService", "a
 
         $scope.sendStatusRequest = function(id, incentive) {
             incentiveFactory.update({id: id, active: incentive.active}).$promise.then(function(params) {
-                console.log(params);
             });
         };
 
@@ -72,12 +73,11 @@ app.controller("incentivesController", ["$scope", "$location", "authService", "a
         /* This load the data, to update in DB check updateIncentive */
         $scope.editIncentive = function (incentive) {
             // Copy to avoid changes in incentives list.
-            //incentive = angular.copy(incentive);
+            incentive = angular.copy(incentive);
 
             incentive.startAt = new Date(incentive.startAt);
             incentive.endAt = new Date(incentive.endAt);
             $scope.incentive = incentive;
-            console.log($scope.incentive);
         }
 
         $scope.clearIncentive = function () {
@@ -104,12 +104,14 @@ app.controller("incentivesController", ["$scope", "$location", "authService", "a
         };
 
     	$scope.addIncentiveType = function () {
-    		console.log($scope.incentiveType);
-    		var type = incentiveTypesFactory.create($scope.incentiveType);
-            $scope.incentiveTypes.push({
-                id: type.id,
-                value: $scope.incentiveType.value
+    		incentiveTypesFactory.create($scope.incentiveType).$promise.then(function(type) {
+                $scope.incentiveTypes.push({
+                    id: type.id,
+                    value: $scope.incentiveType.value
+                });  
+                $scope.incentiveTypeIds.push(type.id);  
             });
+            
 
     	};
 
@@ -122,11 +124,13 @@ app.controller("incentivesController", ["$scope", "$location", "authService", "a
     	};
 
         $scope.addRequirementType = function () {
-            console.log($scope.requirementType);
-            var requirement = requirementTypesFactory.create($scope.requirementType);
-            $scope.requirementTypes.push({
-                id: requirement.id,
-                value: $scope.requirementType.value
+            requirementTypesFactory.create($scope.requirementType).$promise.then(function(requirement) {
+                $scope.requirementTypes.push({
+                    id: requirement.id,
+                    value: $scope.requirementType.value
+                });
+
+                $scope.incentiveRequirementIds.push(requirement.id);
             });
         };
 
@@ -134,36 +138,24 @@ app.controller("incentivesController", ["$scope", "$location", "authService", "a
             $scope.requirementType = {};
         };
 
-        $scope.getIncentiveType = function (incentiveId) {
+        $scope.getIncentiveType = function (typeId) {
             var typeValue = "";
-            angular.forEach($scope.incentives, function(incentive, i) {
-                if (incentive.id === incentiveId) {
-                    angular.forEach($scope.incentiveTypes, function(type, i) {
-                        if (incentive.type === type.id) {
-                            typeValue = type.value
-                        }
-                    });
+            angular.forEach($scope.incentiveTypes, function(type, i) {
+                if (typeId === type.id) {
+                    typeValue = type.value
                 }
-            })
+            });
             return typeValue;
         }
 
-        $scope.getIncentiveRequirement = function (incentiveId) {
+        $scope.getIncentiveRequirement = function (requirementId) {
             var requirementValue = "";
-            angular.forEach($scope.incentives, function(incentive, i) {
-                if (incentive.id === incentiveId) {
-                    angular.forEach($scope.requirementTypes, function(requirement, i) {
-                        if (incentive.requirement === requirement.id) {
-                            requirementValue = requirement.value
-                        }
-                    });
+            angular.forEach($scope.requirementTypes, function(requirement, i) {
+                if (requirementId === requirement.id) {
+                    requirementValue = requirement.value
                 }
-            })
+            });
             return requirementValue;
-        }
-
-        $scope.getRequirementType = function (requirementId) {
-
         }
 
         $scope.validateIncentive = function() {
@@ -181,7 +173,7 @@ app.controller("incentivesController", ["$scope", "$location", "authService", "a
                 incentiveValidator.startAt = "El inicio del incentivo es obligatorio.";
             }
             if ($scope.incentive.endAt === undefined || $scope.incentive.endAt === "" || $scope.incentive.endAt === "?") {
-                incentiveValidator.endAt = "El inicio del incentivo es obligatorio.";
+                incentiveValidator.endAt = "El fin del incentivo es obligatorio.";
             }
             if (new Date($scope.incentive.startAt) > new Date($scope.incentive.endAt)) { // Fecha mayor y menor
                 incentiveValidator.dates = "Las fechas de inicio y fin son incorrectas";
@@ -201,8 +193,27 @@ app.controller("incentivesController", ["$scope", "$location", "authService", "a
         }
 
         $scope.incentives = incentivesFactory.query();
-    	$scope.incentiveTypes = incentiveTypesFactory.query();
-        $scope.requirementTypes = requirementTypesFactory.query();
+    	incentiveTypesFactory.query().$promise.then(function(result) {
+            $scope.incentiveTypes = result;
 
-        console.log($scope.incentiveTypes);
+            $scope.incentiveTypeIds = new Array();
+
+            angular.forEach($scope.incentiveTypes, function(type, i) {
+                $scope.incentiveTypeIds.push(type.id);
+            });
+        });
+
+        
+
+        $scope.requirementTypes = requirementTypesFactory.query().$promise.then(function(result) {
+           $scope.requirementTypes = result;
+
+            $scope.incentiveRequirementIds = new Array();
+
+            angular.forEach($scope.requirementTypes, function(requirement, i) {
+                $scope.incentiveRequirementIds.push(requirement.id);
+            }); 
+
+        });
+
 	}]);
