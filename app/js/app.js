@@ -1,5 +1,5 @@
 //Define an angular module for our app
-var app = angular.module('udgSurveys', ['ngRoute', 'ngResource']);
+var app = angular.module('udgSurveys', ['ngRoute', 'ngResource', 'textAngular']);
 
 //Define Routing for app
 app.config(function($routeProvider) {
@@ -88,6 +88,15 @@ app.config(function($routeProvider) {
 	  when('/status/', {
 		templateUrl: 'templates/status.html',
 		controller: 'statusController',
+		resolve: {
+			auth: function($q, authService) {
+				return resolveLogin($q, authService);
+			}
+		}
+	}).
+	  when('/email/', {
+		templateUrl: 'templates/email.html',
+		controller: 'generalController',
 		resolve: {
 			auth: function($q, authService) {
 				return resolveLogin($q, authService);

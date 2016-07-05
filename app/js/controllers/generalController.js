@@ -16,4 +16,10 @@ app.controller("generalController", ["$scope", "$location", "$window", "authServ
             });
         };
 
-    }]); 
+        $scope.sendEmail = function () {
+            console.log($scope.email);
+        }
+
+        $scope.email = {};
+
+    }]);
