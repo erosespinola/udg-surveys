@@ -76,6 +76,24 @@ app.config(function($routeProvider) {
 			}
 		}
 	}).
+	  when('/contact/', {
+		templateUrl: 'templates/contact.html',
+		controller: 'contactController',
+		resolve: {
+			auth: function($q, authService) {
+				return resolveLogin($q, authService);
+			}
+		}
+	}).
+	  when('/status/', {
+		templateUrl: 'templates/status.html',
+		controller: 'statusController',
+		resolve: {
+			auth: function($q, authService) {
+				return resolveLogin($q, authService);
+			}
+		}
+	}).
       when('/logout/', {
 		templateUrl: 'templates/login.html',
 		controller: 'loginController'
