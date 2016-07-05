@@ -1,0 +1,28 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class=" secondary-navbar clearfix">
+                <button type="button" class="btn btn-primary pull-right" ng-click="update()">Actualizar</button>
+            </div>
+
+
+            <ul class="nav nav-tabs nav-justified">
+                <li role="presentation" class="active"><a href="" style="font-size: x-large; border-bottom-color: #ddd;"><b>Estatus del Sistema</b></a></li>
+            </ul>
+            <br>
+            <form>
+
+                <div class="form-group">
+                    <center>
+                        <label style="vertical-align: middle;">Habilitar modo mantenimiento</label>
+                        <input type="checkbox" id="status-checkbox" data-on-text="Normal" data-off-text="Mantenimiento" ng-model="status.value" ng-checked="status.value", style="margin-left: 5px; margin-right: 5px;">
+                        <span class="label label-success" style="vertical-align: text-top;" ng-hide="status.value">Normal</span>
+                        <span class="label label-warning" style="vertical-align: text-top;" ng-show="status.value">Mantenimiento</span>
+                    </center>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

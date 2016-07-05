@@ -3,19 +3,16 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport"   content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-
-    <title>Encuestas UdeG</title>
+    <title>Encuestas UdG</title>
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-switch.min.css">
     <link rel="stylesheet" href="css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
-    
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
     <link rel="icon" href="img/favicon.ico" type="image/x-icon">
-    
     <link rel="stylesheet" href="css/style.css">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -29,87 +26,38 @@
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container-fluid">
                 <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
                     <a class="navbar-brand" href="#">
                         <img alt="Brand" src="img/logo.png">
                     </a>
+                    <h4 class="navbar-text">Encuestas UdG</h4>
                 </div>
-                <ul class="nav navbar-nav navbar-right" ng-show="showMenu()" ng-controller="generalController">
-                    <li><a href="#/" target="_self">Inicio/Estadíasticas</a></li>
-                    <li><a href="#/surveys" target="_self">Encuestas</a></li>
-                    <li><a href="#/incentives" target="_self">Incentivos</a></li>
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administración <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#/users" target="_self">Usuarios</a></li>
-                            <li><a href="" ng-click="loadStatus()" data-toggle="modal" data-target="#system-status-modal">Modo mantenimiento</a></li>
-                            <li><a href="" ng-click="loadContacto()" data-toggle="modal" data-target="#contact-modal">Datos de contacto</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="" ng-click="logout()" target="_self">Cerrar sesión</a></li>
-                </ul>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right" ng-show="showMenu()" ng-controller="generalController">
+                        <li><a href="#/" target="_self">Inicio/Estadíasticas</a></li>
+                        <li><a href="#/surveys" target="_self">Encuestas</a></li>
+                        <li><a href="#/incentives" target="_self">Incentivos</a></li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administración <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#/users" target="_self">Usuarios</a></li>
+                                <li><a href="#/status" target="_self">Estatus del Sistema</a></li>
+                                <li><a href="#/contact" target="_self">Contacto</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#/logout" target="_self" ng-click="logout()">Cerrar sesión</a></li>
+                    </ul>
+                </div>
             </div>
         </nav>
     </header>
     
     <div ng-view=""></div>
-
-
-    <div class="modal fade" id="system-status-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">Cambiar estatus</h4>
-                </div>
-                <div class="modal-body">
-
-                    <form>
-                        <div class="form-group">
-                            <div>
-                                <label>Estatus del sistema</label>
-                            </div>
-                            <div class="bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-id-switch-onText bootstrap-switch-animate bootstrap-switch-off" style="">
-                                <div class="bootstrap-switch-container" style="">
-                                    <input id="status" type="checkbox" checked="" data-on-text="Normal" data-off-text="Mantenimiento">
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-                    <label>Contraseña:&nbsp;</label>
-                    <input type="password" class="form-control password-inline">
-                    <button type="button" class="btn btn-primary">Cambiar estatus</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="contact-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">Contacto</h4>
-                </div>
-                <div class="modal-body">
-
-                    <form>
-                        <div class="form-group">
-                            <label>Contacto</label>
-                            <textarea class="form-control"></textarea>
-                        </div>
-                    </form>
-                
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary">Actualizar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -129,16 +77,20 @@
 
     <script src="js/controllers/generalController.js"></script>
     <script src="js/controllers/loginController.js"></script>
-    <!--<script src="js/controllers/surveysController.js"></script>-->
     <script src="js/controllers/surveyController.js"></script>
     <script src="js/controllers/incentivesController.js"></script>
     <script src="js/controllers/usersController.js"></script>
+    <script src="js/controllers/contactController.js"></script>
+    <script src="js/controllers/statusController.js"></script>
 
     <script src="js/services/authService.js"></script>
     <script src="js/services/surveysService.js"></script>
     <script src="js/services/incentivesService.js"></script>
     <script src="js/services/incentiveTypesService.js"></script>
     <script src="js/services/requirementTypesService.js"></script>
+    <script src="js/services/usersService.js"></script>
+    <script src="js/services/contactService.js"></script>
+    <script src="js/services/statusService.js"></script>
 
     <script type="text/javascript">
         $(function () {
