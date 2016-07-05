@@ -13,23 +13,38 @@
             <table class="table table-hover">
                 <tr>
                     <th>Incentivo</th>
-                    <th>Fecha de creación</th>
+                    <th>Tipo</th>
+                    <th>Condición</th>
                     <th>Estatus</th>
                     <th>Acciones</th>
                 </tr>
                 <tr ng-repeat="incentive in incentives">
                     <td>{{incentive.name}}</td>
-                    <td>{{incentive.created_at | date:'dd/MM/yyyy @ h:mma' }}</td>
-                    <td>{{getStatus(incentive.active)}}</td>
+                    <!--<td>{{incentive.created_at | date:'dd/MM/yyyy @ h:mma' }}</td>-->
+                    <td>{{ getIncentiveType(incentive.id) }}</td>
+                    <td>{{ getIncentiveRequirement(incentive.id) }}</td>
+                    <td>
+                        <span style="cursor: pointer">
+                            <span ng-show="incentive.active">
+                                <span class="fa fa-check-square-o fa-1-5x" ng-click="updateStatus(incentive.id)" data-toggle="tooltip" data-placement="top" title="Cambiar estatus"></span>
+                            </span>
+                            <span ng-hide="incentive.active">
+                                <span class="fa fa-square-o fa-1-5x" ng-click="updateStatus(incentive.id)" data-toggle="tooltip" data-placement="top" title="Cambiar estatus"></span>
+                            </span>
+                        </span>
+                        <span style="display: inline-block; width: 50px">{{ getStatus(incentive.active) }}</span>
+
+                    </td>
                     <td>
                         <div class="actions-container">
                             <span data-toggle="modal" data-target="#incentive-modal-detail" data-backdrop="static">
                                 <span class="fa fa-pencil fa-1-5x" ng-click="editIncentive(incentive)" data-toggle="tooltip" data-placement="top" title="Editar"></span>
                             </span>
 
-                            <span data-toggle="modal" data-target="#incentive-modal-status" data-backdrop="static">
+                            <!--<span data-toggle="modal" data-target="#incentive-modal-status" data-backdrop="static">
                                 <span class="fa fa-toggle-on fa-1-5x" ng-click="updateStatus(incentive.id)" data-toggle="tooltip" data-placement="top" title="Cambiar estatus"></span>
-                            </span>
+                            </span>-->
+
                             <span class="fa fa-trash fa-1-5x" ng-click="deleteIncentive(incentive.id)" data-toggle="tooltip" data-placement="top" title="Eliminar"></span>
                         </div>
                     </td>
@@ -65,16 +80,14 @@
 
 
                                     <select id="incentive-type" class="form-control" ng-model="incentive.type" ng-options="type.id as (type.value) for type in incentiveTypes track by type.id">
-                                        <option>- Incentivo -</option>
-                                    </select>            
+                                    </select>
 
-
-                                </div>   
+                                </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <button class="btn btn-default" ng-click="clearIncentiveType()" data-toggle="modal" data-target="#incentive-type-modal" data-backdrop="static" style="margin-top: 1.75em; width: 100%"><span class="fa fa-plus"></span> Agregar tipo</button>
-                                </div>   
+                                </div>
                             </div>
                         </div>
 
@@ -83,12 +96,10 @@
                                 <div class="form-group">
                                     <label for="survey-detail">Condición</label>
 
-                                    <select id="requirement-type" class="form-control" ng-model="incentive.requirement" ng-options="requirement.id as (requirement.value) for requirement in requirementTypes track by requirement.id ">
-                                        <option>- Condición -</option>
-                                    </select>  
+                                    <select id="requirement-type" class="form-control" ng-model="incentive.requirement" ng-options="requirement.id as (requirement.value) for requirement in requirementTypes track by requirement.id">
+                                    </select>
 
-
-                                </div>         
+                                </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -101,7 +112,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Fecha de inicio</label>
-                                    <input class="form-control" type="date" id="date-start" ng-model="incentive.startAt"> 
+                                    <input class="form-control" type="date" id="date-start" ng-model="incentive.startAt">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -124,8 +135,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" ng-hide="incentive.id" ng-click="createIncentive()" data-dismiss="modal">Guardar</button>
-                <button type="button" class="btn btn-primary" ng-show="incentive.id" ng-click="updateIncentive()" data-dismiss="modal">Actualizar</button>
+                <button type="button" class="btn btn-primary" ng-hide="incentive.id" ng-click="createIncentive()">Guardar</button>
+                <button type="button" class="btn btn-primary" ng-show="incentive.id" ng-click="updateIncentive()">Actualizar</button>
             </div>
         </div>
     </div>
