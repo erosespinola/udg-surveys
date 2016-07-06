@@ -1,7 +1,52 @@
-app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'surveysFactory', 'surveyFactory', 'questionsFactory', 'questionFactory', 'answersFactory', 'answerFactory', '$location', '$route',
-    function ($scope, $routeParams, authService, surveysFactory, surveyFactory, questionsFactory, questionFactory, answersFactory, answerFactory, $location, $route) {
+app.controller('surveyController', [
+    '$scope', 
+    '$routeParams', 
+    'authService', 
+    'addSurveyFactory',
+    'surveysFactory', 
+    'surveyFactory', 
+    'updateSurveyFactory', 
+    'deleteSurveyFactory',
+    'questionsFactory', 
+    'addQuestionFactory',
+    'updateQuestionFactory',
+    'deleteQuestionFactory', 
+    'deleteAnswerFactory',
+    'answersFactory', 
+    'updateAnswerFactory', 
+    'addAnswerFactory', 
+    '$location', 
+    '$route',
+    function (
+        $scope, 
+        $routeParams, 
+        authService, 
+        addSurveyFactory,
+        surveysFactory, 
+        surveyFactory, 
+        updateSurveyFactory, 
+        deleteSurveyFactory,
+        questionsFactory, 
+        addQuestionFactory,
+        updateQuestionFactory, 
+        deleteQuestionFactory,
+        deleteAnswerFactory,
+        answersFactory, 
+        updateAnswerFactory, 
+        addAnswerFactory, 
+        $location, 
+        $route) {
+        // Used to map type of question
+        $scope.types = [
+            { value: 0, label: "Texto corto" },
+            { value: 1, label: "Texto largo" },
+            { value: 2, label: "Opción múltiple" },
+            { value: 3, label: "Selección múltiple" },
+            { value: 4, label: "Escala" }
+        ];
+
         $scope.getStatus = function (active) {
-            return (active) ? "Activa" : "Inactiva" ;
+            return (active === 1) ? "Activa" : "Inactiva" ;
         };
 
         // callback for ng-click 'editSurvey':
@@ -21,10 +66,10 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
                 closeOnConfirm: true 
                 }, 
                 function() {
-                    surveyFactory.delete({ id: surveyId }).$promise.then(function(params){
+                    console.log(surveyId);
+                    deleteSurveyFactory.delete({ id: surveyId }).$promise.then(function(params){
                         $scope.surveys = surveysFactory.query();
                     });
-                    //$route.reload();
             });
         };
 
@@ -36,23 +81,10 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
         surveysFactory.query().$promise.then(function(surveys) {
             $scope.surveys = surveys;
         });
-        
-
-
-
 
         /*
             Everything related to the form begins here...  
         */
-
-        // Used to map type of question
-        $scope.types = [
-            { value: 0, label: "Texto corto" },
-            { value: 1, label: "Texto largo" },
-            { value: 2, label: "Opción múltiple" },
-            { value: 3, label: "Selección múltiple" },
-            { value: 4, label: "Escala" }
-        ];
 
         // Variables to keep values before saving in the $scope.survey object.
         $scope.answer = {};
@@ -68,11 +100,7 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
 
         $scope.saving = false;
 
-        /*
-            SURVEY
-        */
-
-        // callback for ng-click 'createNewSurvey':
+        // Surveys
         $scope.createNewSurvey = function() {
             if ($scope.saving) {
                 return;
@@ -80,9 +108,7 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
 
             var validator = $scope.validateSurvey();
             if (!(Object.keys(validator).length === 0 && validator.constructor === Object)) {
-
                 var message = $scope.getErrorMessage(validator);
-
                 swal({
                     title: "Encuesta incompleta",
                     text: message,
@@ -93,19 +119,12 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
             }
 
             $scope.saving = !$scope.saving;
-
-            if ($scope.survey.name === undefined || $scope.survey.name === "") {
-                alert("La encuesta debe tener un nombre");
-            } else {
-                $scope.survey.active = false;
-                surveysFactory.create($scope.survey).$promise.then(function(params){
-                    $location.path('/surveys/');
-                });
-                
-            }
+            $scope.survey.Current = 0;
+            addSurveyFactory.add($scope.survey).$promise.then(function(params){
+                $location.path('/surveys/');
+            });
         }
 
-        // callback for ng-click 'updateSurvey':
         $scope.updateSurvey = function() {
             if ($scope.saving) {
                 return;
@@ -113,119 +132,88 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
 
             var validator = $scope.validateSurvey();
             if (!(Object.keys(validator).length === 0 && validator.constructor === Object)) {
-
                 var message = $scope.getErrorMessage(validator);
-
                 swal({
                     title: "Encuesta incompleta",
                     text: message,
                     type: "warning"
                 });
-
                 return;
             }
 
             $scope.saving = !$scope.saving;
-
-            var updateQuestions = [];
-            var createQuestions = [];
-            var updateAnswers = [];
-            var createAnswers = [];
-
-            angular.forEach($scope.survey.questions, function(question, i){
-                if (question.id) {
-                    updateQuestions.push(question);
-
-                    angular.forEach(question.answerOptions, function(answer, i) {
-                        if (answer.id) {
-                            updateAnswers.push(answer);
-                        } else {
-                            answer.question = question.id;
-                            createAnswers.push(answer);
-                        }
-                    });
-                } else {
-                    question.survey = $scope.survey.id;
-                    createQuestions.push(question);
-                    angular.forEach(question.answerOptions, function(answer, i){
-                        answerFactory.create(answer);
-                    });
-                    
-                }
-            });
-            
-            surveyFactory.update($scope.survey).$promise.then(function(params) {
-                questionFactory.update({questions: updateQuestions}).$promise.then(function(params) {
-                    angular.forEach(createQuestions, function(question, i){
-                        questionFactory.create(question);
-                    });
-
-                    answerFactory.update({answerOptions: updateAnswers}).$promise.then(function(params) {
-                        angular.forEach(createAnswers, function(answer, i){
-                            answerFactory.create(answer)
-                        });
-                    });
-                });
-            }).finally(function() {
+            updateSurveyFactory.update($scope.survey).$promise.then(function(params) { }).finally(function() {
                 $location.path('/surveys/');
             });
         };
 
         $scope.sendStatusRequest = function(id, survey) {
-            surveyFactory.update({id: id, active: survey.active}).$promise.then(function(params) {
-                console.log(params);
-            });
+            console.log("changing " + survey.Survey + " " + id + " to " + survey.Current);
+            updateSurveyFactory.update({SurveyKey: id, Current: survey.Current, Survey: survey.Survey});
         };
 
         $scope.updateStatus = function(surveyId) {
             angular.forEach($scope.surveys, function(survey, i) {
-                if (survey.id === surveyId) {
-                    survey.active = true;
+                if (survey.SurveyKey === surveyId) {
+                    survey.Current = 1;
                 } else {
-                    survey.active = false;
+                    survey.Current = 0;
                 }
-                $scope.sendStatusRequest(survey.id, survey);
+                
+                $scope.sendStatusRequest(survey.SurveyKey, survey);
             });
 
             swal("Encuesta activa", "Se ha actualizado la encuesta como activa", "success")
         }
 
-        // callback for ng-click 'cancel':
         $scope.cancel = function() {
             $location.path('/surveys');
         };
 
-        /*
-            QUESTIONS
-        */
-
+        
+        // Questions
         $scope.saveQuestion = function() {
             var validator = $scope.validateQuestion();
             if (!(Object.keys(validator).length === 0 && validator.constructor === Object)) {
-
                 var message = $scope.getErrorMessage(validator);
-
                 swal({
                     title: "Pregunta incompleta",
                     text: message,
                     type: "warning"
                 });
-
-                return;
+                $('#survey-modal-detail').modal('hide');
+                return $scope.clearQuestion();
             } else {
                 if ($scope.question.index !== undefined) { // Editing question
                     $scope.survey.questions[$scope.question.index] = $scope.question;
+                    updateQuestionFactory.update($scope.question).$promise.then(function() {
+                        if ($scope.question.TypeQuestion === 0 || $scope.question.TypeQuestion === 1 || $scope.question.TypeQuestion === 4) {
+                            deleteAnswerFactory.delete({ id: $scope.question.QuestionKey }).$promise.then(function(){
+                                $scope.question.answerOptions = [];
+                                $scope.clearQuestion();
+                            }) ;
+                        }
+                    });
                 } else { // New question
-                    $scope.survey.questions.push($scope.question);
+                    $scope.question.SurveyLink = $scope.survey.SurveyKey;
+                    $scope.question.Min = 0;
+                    $scope.question.Max = 10;
+                    $scope.question.TextMin = "Malo";
+                    $scope.question.TextMax = "Bueno";
+
+                    addQuestionFactory.add($scope.question).$promise.then(function(question) {
+                        $scope.question.QuestionKey = question.true;
+                        $scope.survey.questions.push($scope.question);
+                        $scope.clearQuestion();
+                    });
                 }
             }
 
             $('#survey-modal-detail').modal('hide');
-            $scope.clearQuestion();
         }
 
         $scope.loadQuestion = function (i) {
-            $scope.question = $scope.survey.questions[i];
+            $scope.question = angular.copy($scope.survey.questions[i]);
             $scope.question.index = i;
             $scope.editingState.question = true;
         }
@@ -233,7 +221,7 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
         $scope.deleteQuestion = function (i) {
             swal({
                 title: "¿Deseas eliminar esta pregunta?",
-                text: "",
+                text: "La pregunta será eliminada junto con todas las opciones que contiene.",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
@@ -241,16 +229,18 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
                 closeOnConfirm: true 
             }, 
                 function() {
-                    console.log($scope.survey);
-                    if ($scope.survey.questions[i].id) {
-                        questionFactory.delete({ id: $scope.survey.questions[i].id });
-                    }
-                    $scope.survey.questions.splice(i, 1);
-                    $scope.$apply();
+                    var questionId = $scope.survey.questions[i].QuestionKey;
+                    deleteAnswerFactory.delete({ id: questionId }).$promise.then(function(){
+                        console.log("inside " + questionId);
+                        deleteQuestionFactory.delete({ id: questionId }).$promise.then(function() {
+                            $scope.survey.questions.splice(i, 1);
+                        });
+                    });
+                    
+                    
             });
         }
 
-        // Clean the scope when adding a new question
         $scope.clearQuestion = function() {
             $scope.question = {
                 answerOptions: []
@@ -258,16 +248,9 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
             $scope.editingState.question = false;
         }
 
-        /* 
-            ANSWERS
-        */
-
+        // Answers
         $scope.saveAnswer = function() {
             var validator = $scope.validateAnswer();
-            console.log(validator);
-            console.log({});
-
-            console.log(validator != {});
             if (!(Object.keys(validator).length === 0 && validator.constructor === Object)) {
                 var message = $scope.getErrorMessage(validator);
 
@@ -276,77 +259,70 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
                     text: message,
                     type: "warning"
                 });
-
-                return;
+                $('#answer-modal').modal('hide');
+                return $scope.clearAnswer();
             } else {
                 if ($scope.answer.index !== undefined) { // Editing answer
                     $scope.question.answerOptions[$scope.answer.index] = $scope.answer;
+                    updateAnswerFactory.update($scope.answer);
+                    $('#answer-modal').modal('hide');
+                    $scope.clearAnswer();
                 } else { // New answer
-                    $scope.question.answerOptions.push($scope.answer);
+                    $scope.answer.QuestionLink = $scope.question.QuestionKey;
+                    addAnswerFactory.add($scope.answer).$promise.then(function() {  
+                        updateQuestionFactory.update($scope.question).$promise.then(function() {
+                            $scope.question.answerOptions.push($scope.answer);
+                            $('#answer-modal').modal('hide');
+                            $scope.clearAnswer();
+                        });     
+                    });  
                 }
-                $('#answer-modal').modal('hide');
-                $scope.clearAnswer();
             }
-
-            
         }
 
         $scope.loadAnswer = function (i) {
-            $scope.answer = $scope.question.answerOptions[i];
+            $scope.answer = angular.copy($scope.question.answerOptions[i]);
             $scope.answer.index = i;
             $scope.editingState.answer = true;
         }
 
-        $scope.loadMinMax = function() {
-            if ($scope.question.answerOptions[0]) {
-                $scope.answer = $scope.question.answerOptions[0];
-            }
-        } 
-
-
-        // Clean the scope when adding a new answer
         $scope.clearAnswer = function() {
             $scope.answer = {};
             $scope.editingState.answer = false;
         }
 
+        // Validations
         $scope.validateSurvey = function() {
             var surveyValidator = {};
-            if ($scope.survey.name === undefined || $scope.survey.name === "") {
+            if ($scope.survey.Survey === undefined || $scope.survey.Survey === "") {
                 surveyValidator.name = "El nombre de la encuesta es obligatorio."
-            }
-            if ($scope.survey.questions.length === 0) {
-                surveyValidator.questions = "Se debe agregar al menos una pregunta."
             }
             return surveyValidator;
         };
 
         $scope.validateQuestion = function() {
             var questionValidator = {};
-            if ($scope.question.question === undefined || $scope.question.question === "") {
+            if ($scope.question.Question === undefined || $scope.question.Question === "") {
                 questionValidator.question = "El texto de la pregunta es obligatorio.";
             }
-            if ($scope.question.type === undefined || $scope.question.type === "" || $scope.question.type === "?") {
+            if ($scope.question.TypeQuestion === undefined || $scope.question.TypeQuestion === "" || $scope.question.TypeQuestion === "?") {
                 questionValidator.type = "El tipo de pregunta es obligatorio.";
             }
-            if ([2,3].indexOf($scope.question.type) > -1 && $scope.question.answerOptions.length === 0) {
-                questionValidator.answerOptions = "Se debe agregar al menos una respuesta.";
-            }
-            if ($scope.question.type === 4 && $scope.question.answerOptions.length === 0) { // Escala
+            if ($scope.question.TypeQuestion === 4 && $scope.question.QuestionKey 
+                && ($scope.question.Min == null || $scope.question.Max == null) ) { // Escala
                 questionValidator.answerOptionsScale = "Se debe definir una escala."
+            }
+            if ($scope.question.TypeQuestion === 4 && $scope.question.QuestionKey  && ($scope.question.TextMin == null || $scope.question.TextMin === "" 
+                || $scope.question.TextMax == null || $scope.question.TextMax === "")) { // Escala
+                questionValidator.answerOptionsScale = "Se debe definir un texto."
             }
             return questionValidator;
         };
 
         $scope.validateAnswer = function() {
             var answerValidator = {};
-            if ([2,3].indexOf($scope.question.type) > -1 && ($scope.answer.value === undefined || $scope.answer.value === "")) {
+            if ([2,3].indexOf($scope.question.TypeQuestion) > -1 && ($scope.answer.Option === undefined || $scope.answer.Option === "")) {
                 answerValidator.value = "El texto de la respuesta es obligatorio.";
-            }
-            if ($scope.question.type === 4) {
-                if (parseInt($scope.answer.min) >= parseInt($scope.answer.max)) {
-                    answerValidator.range = "Valores de escala incorrectos.";
-                }
             }
             return answerValidator;
         };
@@ -361,16 +337,15 @@ app.controller('surveyController', ['$scope', '$routeParams', 'authService', 'su
             return errorText;
         }
 
-        // Loading complete survey object...
+        // Load
         if ($routeParams.id) {
             $scope.survey = surveyFactory.show({id: $routeParams.id});
             $scope.survey.$promise.then(function(response){
 
                 $scope.survey.questions = questionsFactory.query({id: $routeParams.id});
                 $scope.survey.questions.$promise.then(function(questionsResponse){
-
                     angular.forEach($scope.survey.questions, function(question, i){
-                        $scope.survey.questions[i].answerOptions = answersFactory.query({id: question.id});
+                        $scope.survey.questions[i].answerOptions = answersFactory.query({id: question.QuestionKey});
                     });
                 });
             });    

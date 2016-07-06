@@ -6,7 +6,6 @@ app.config(function($routeProvider) {
 	var resolveLogin = function ($q, authService) {
 		var userInfo = authService.getUserInfo();
 		var currentDate = new Date();
-		console.log(userInfo);
 		if (userInfo) {
 			if (currentDate <= userInfo.expires_on) {
 				return $q.when(userInfo);	
@@ -20,7 +19,7 @@ app.config(function($routeProvider) {
 
     $routeProvider.
       when('/', {
-		template: 'Work in progress',
+		templateUrl: 'templates/home.html',
 		resolve: {
 			auth: function($q, authService) {
 				return resolveLogin($q, authService);
@@ -122,6 +121,7 @@ app.config(['$httpProvider', function($httpProvider) {
 /* API's base url */
 app.run(['$window', function($window) {
 	$window.baseUrl = 'http://107.170.214.114:9000/';
+	$window.baseUrlSurveys = 'http://52.37.57.159:8080/';
 }]);
 
 

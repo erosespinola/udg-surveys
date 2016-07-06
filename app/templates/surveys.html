@@ -13,29 +13,26 @@
             <table class="table table-hover">
                 <tr>
                     <th>Encuesta</th>
-                    <th>Fecha de creación</th>
                     <th>Estatus</th>
                     <th>Acciones</th>
                 </tr>
                 <tr ng-repeat="survey in surveys">
-                    <td>{{ survey.name }}</td>
-                    <td>{{ survey.created_at | date:'dd/MM/yyyy @ h:mma' }}</td>
+                    <td>{{ survey.Survey }}</td>
                     <td>
                         <span style="cursor: pointer">
-                            <span ng-show="survey.active">
-                                <span class="fa fa-check-square-o fa-1-5x" ng-click="updateStatus(survey.id)" data-toggle="tooltip" data-placement="top" title="Cambiar estatus"></span>
+                            <span ng-show="survey.Current">
+                                <span class="fa fa-check-square-o fa-1-5x" ng-click="updateStatus(survey.SurveyKey)" data-toggle="tooltip" data-placement="top" title="Cambiar estatus"></span>
                             </span>
-                            <span ng-hide="survey.active">
-                                <span class="fa fa-square-o fa-1-5x" ng-click="updateStatus(survey.id)" data-toggle="tooltip" data-placement="top" title="Cambiar estatus"></span>
+                            <span ng-hide="survey.Current">
+                                <span class="fa fa-square-o fa-1-5x" ng-click="updateStatus(survey.SurveyKey)" data-toggle="tooltip" data-placement="top" title="Cambiar estatus"></span>
                             </span>
                         </span>
-                        <span style="display: inline-block; width: 50px">{{ getStatus(survey.active) }}</span>
+                        <span style="display: inline-block; width: 50px">{{ getStatus(survey.Current) }}</span>
                     </td>
                     <td>
                         <div class="actions-container">
-                            <span ng-click="editSurvey(survey.id)" class="fa fa-pencil fa-1-5x" data-toggle="tooltip" data-placement="top" title="Editar"></span>
-                            <span ng-click="deleteSurvey(survey.id)" class="fa fa-trash fa-1-5x" data-toggle="tooltip" data-placement="top" title="Eliminar"></span>
-
+                            <span ng-click="editSurvey(survey.SurveyKey)" class="fa fa-pencil fa-1-5x" data-toggle="tooltip" data-placement="top" title="Editar"></span>
+                            <span ng-click="deleteSurvey(survey.SurveyKey)" class="fa fa-trash fa-1-5x" data-toggle="tooltip" data-placement="top" title="Eliminar"></span>
                             <!--
                             <span class="fa fa-file-excel-o fa-1-5x" data-toggle="tooltip" data-placement="top" title="Exportar"></span>
                             <span class="fa fa-bar-chart fa-1-5x" data-toggle="tooltip" data-placement="top" title="Estadísticas"></span>

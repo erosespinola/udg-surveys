@@ -50,8 +50,6 @@ app.controller("generalController", ["$scope", "$location", "$window", "authServ
                     }
                 })
                 .done(function(data) {
-
-                    alert("Correo enviado");
                     swal("Correo enviado!");
                     setTimeout(function(){
                         $scope.email = {};                
