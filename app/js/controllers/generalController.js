@@ -18,6 +18,46 @@ app.controller("generalController", ["$scope", "$location", "$window", "authServ
 
         $scope.sendEmail = function () {
             console.log($scope.email);
+            swal({   
+                title: "¿Deseas enviar este correo?",   
+                text: "",   
+                type: "warning",   
+                showCancelButton: true,   
+                confirmButtonText: "Enviar",   
+                closeOnConfirm: true
+            }, 
+            function() { 
+                $.ajax({
+                    url: "sendEmail.php",
+                    data: $scope.email,
+                    method: "POST",
+                    beforeSend: function( xhr ) {
+                        xhr.overrideMimeType( "text/plain; charset=x-user-defined" );
+                    }
+                })
+                .done(function(data) {
+                    console.log(data);
+                    $scope.confirmAndRedirect();
+                    
+                });  
+            });  
+        }
+
+        $scope.confirmAndRedirect = function() {
+            swal({   
+                title: "Correo enviado",   
+                text: "",   
+                type: "warning",   
+                showCancelButton: false,   
+                confirmButtonText: "Aceptar",   
+                closeOnConfirm: true
+            }, 
+            function() {}); 
+            $scope.email = {};                
+            $location.path("/");  
+            $scope.$apply(function(){
+                        
+            });  
         }
 
         $scope.email = {};
