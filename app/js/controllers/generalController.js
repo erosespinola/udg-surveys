@@ -17,6 +17,20 @@ app.controller("generalController", ["$scope", "$location", "$window", "authServ
         };
 
         $scope.sendEmail = function () {
+
+            var validator = $scope.validateEmail();
+            if (!(Object.keys(validator).length === 0 && validator.constructor === Object)) {
+                var message = $scope.getErrorMessage(validator);
+
+                swal({
+                    title: "Correo incompleto",
+                    text: message,
+                    type: "warning"
+                });
+
+                return;
+            }
+
             console.log($scope.email);
             swal({   
                 title: "¿Deseas enviar este correo?",   
@@ -26,7 +40,7 @@ app.controller("generalController", ["$scope", "$location", "$window", "authServ
                 confirmButtonText: "Enviar",   
                 closeOnConfirm: true
             }, 
-            function() { 
+            function(isConfirm) { 
                 $.ajax({
                     url: "sendEmail.php",
                     data: $scope.email,
@@ -36,28 +50,45 @@ app.controller("generalController", ["$scope", "$location", "$window", "authServ
                     }
                 })
                 .done(function(data) {
-                    console.log(data);
-                    $scope.confirmAndRedirect();
+
+                    alert("Correo enviado");
+                    swal("Correo enviado!");
+                    setTimeout(function(){
+                        $scope.email = {};                
+                        $location.path("/");      
+                        $scope.$apply(function() {});    
+                    }, 2000);
                     
                 });  
             });  
         }
 
-        $scope.confirmAndRedirect = function() {
-            swal({   
-                title: "Correo enviado",   
-                text: "",   
-                type: "warning",   
-                showCancelButton: false,   
-                confirmButtonText: "Aceptar",   
-                closeOnConfirm: true
-            }, 
-            function() {}); 
-            $scope.email = {};                
-            $location.path("/");  
-            $scope.$apply(function(){
-                        
-            });  
+        $scope.validateEmail = function() {
+            validator = {};
+
+            if ($scope.email.receiver === undefined || $scope.email.receiver === "") {
+                validator.receiver = "El destinatario es obligatorio."
+            }
+
+            if ($scope.email.subject === undefined || $scope.email.subject === "") {
+                validator.subject = "El asunto es obligatorio."
+            }
+
+            if ($scope.email.message === undefined || $scope.email.message === "") {
+                validator.message = "El contenido del correo es obligatorio."
+            }
+
+            return validator;
+        }
+
+        $scope.getErrorMessage = function(validator) {
+            var errorText = "";
+            for (var key in validator) {
+                if (validator.hasOwnProperty(key)) {
+                    errorText += validator[key] + '\n';
+                }
+            }
+            return errorText;
         }
 
         $scope.email = {};
